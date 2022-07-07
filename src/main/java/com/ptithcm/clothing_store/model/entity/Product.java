@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -14,6 +15,28 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+
+@NamedEntityGraph(
+        name = "graph-product",
+        attributeNodes = {
+                @NamedAttributeNode("prices"),
+                @NamedAttributeNode("brand"),
+                @NamedAttributeNode("label"),
+                @NamedAttributeNode("stuff"),
+                @NamedAttributeNode("gender"),
+                @NamedAttributeNode("productDiscounts"),
+                @NamedAttributeNode(value = "productColors",subgraph = "subgraph.product-color-size")
+        },
+        subgraphs ={
+                @NamedSubgraph(name = "subgraph.product-color-size",
+                        attributeNodes = {
+                        @NamedAttributeNode("color")
+                                ,@NamedAttributeNode(value = "productColorSize",subgraph = "sub-size")
+                }),
+                @NamedSubgraph(name = "sub-size"
+                        ,attributeNodes = {@NamedAttributeNode("size")})
+        }
+)
 public class Product extends IdAndVersion {
     @Column(name = "product_name")
     private String productName;
@@ -24,7 +47,7 @@ public class Product extends IdAndVersion {
     @Column(name = "is_active")
     private Boolean isActive;
     @OneToMany(mappedBy = "product")
-    private List<ProductColor> productColors;
+    private Set<ProductColor> productColors;
     @ManyToOne
     @JoinColumn(name = "id_label",referencedColumnName = "id")
     private Label label;
@@ -37,11 +60,8 @@ public class Product extends IdAndVersion {
     @ManyToOne
     @JoinColumn(name = "id_gender",referencedColumnName = "id")
     private Gender gender;
-
     @OneToMany(mappedBy = "product")
-    private List<ProductSize> productSize;
+    private Set<Price> prices;
     @OneToMany(mappedBy = "product")
-    private List<Price> prices;
-    @OneToMany(mappedBy = "product")
-    private List<ProductDiscount> productDiscounts;
+    private Set<ProductDiscount> productDiscounts;
 }

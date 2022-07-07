@@ -8,20 +8,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PRODUCT_SIZE")
+@Table(name = "PRODUCT_COLOR_SIZE")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductSize {
+public class ProductColorSize {
     @EmbeddedId
-    private ProductSizeKey id;
+    private ProductColorSizeKey id;
     @Column(name = "quantity")
     private Integer quantity;
     @ManyToOne
-    @JoinColumn(name = "id_product",referencedColumnName = "id")
-    @MapsId("productId")
-    private Product product;
+    @JoinColumn(name = "id_product_color",referencedColumnName = "id")
+    @MapsId("productColorId")
+    private ProductColor productColor;
     @ManyToOne
     @JoinColumn(name = "id_size",referencedColumnName = "id")
     @MapsId("sizeId")

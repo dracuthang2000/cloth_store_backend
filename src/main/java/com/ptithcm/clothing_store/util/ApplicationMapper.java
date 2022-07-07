@@ -2,20 +2,20 @@ package com.ptithcm.clothing_store.util;
 
 import com.google.gson.Gson;
 import com.ptithcm.clothing_store.model.dto.*;
-import com.ptithcm.clothing_store.model.entity.Account;
-import com.ptithcm.clothing_store.model.entity.Customer;
-import com.ptithcm.clothing_store.model.entity.Person;
-import com.ptithcm.clothing_store.model.entity.Role;
+import com.ptithcm.clothing_store.model.entity.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
+@Transactional
 public class ApplicationMapper {
     public ApplicationMapper() {
     }
@@ -111,5 +111,107 @@ public class ApplicationMapper {
         entity.setIsActive(dto.getIsActive());
         entity.setVersion(dto.getVersion());
         return entity;
+    }
+    public ColorDto ColorToColorDto(Color entity){
+        ColorDto dto = new ColorDto();
+        dto.setColor(entity.getColor());
+        dto.setId(entity.getId());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public ColorProductDto productColorToProductColorDto(ProductColor entity){
+        ColorProductDto dto = new ColorProductDto();
+        dto.setId(entity.getId());
+        dto.setImg(entity.getImage());
+        dto.setVersion(entity.getVersion());
+        dto.setColor(this.ColorToColorDto(entity.getColor()));
+        dto.setProductColorSizesDto(this.productColorSizeListToProductColorSizeDtoList(entity.getProductColorSize()));
+        return dto;
+    }
+    public BrandDto brandToBrandDto(Brand entity){
+        BrandDto dto = new BrandDto();
+        dto.setId(entity.getId());
+        dto.setBrand(entity.getBrandName());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public LabelDto labelToLabelDto(Label entity){
+        LabelDto dto = new LabelDto();
+        dto.setLabel(entity.getLabelName());
+        dto.setId(entity.getId());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public GenderDto genderToGenderDto(Gender entity){
+        GenderDto dto = new GenderDto();
+        dto.setGender(entity.getGenderName());
+        dto.setId(entity.getId());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public SizeDto sizeToSizeDto(Size entity){
+        SizeDto dto = new SizeDto();
+        dto.setId(entity.getId());
+        dto.setSize(entity.getSize());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public ProductColorSizeDto productColorSizeToProductColorSizeDto(ProductColorSize entity){
+        ProductColorSizeDto dto = new ProductColorSizeDto();
+        dto.setQuantity(entity.getQuantity());
+        dto.setSize(this.sizeToSizeDto(entity.getSize()));
+        return dto;
+    }
+    public StuffDto stuffToStuffDto(Stuff entity){
+        StuffDto dto = new StuffDto();
+        dto.setId(entity.getId());
+        dto.setStuff(entity.getStuffName());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    private PriceDto priceToPriceDto(Price entity){
+        PriceDto dto = new PriceDto();
+        dto.setId(entity.getId());
+        dto.setPrice(entity.getPrice());
+        dto.setStartDate(entity.getStartDate());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public List<ProductColorSizeDto> productColorSizeListToProductColorSizeDtoList(List<ProductColorSize> entities){
+        List<ProductColorSizeDto> dtos = new ArrayList<>();
+        entities.forEach(e->{
+            dtos.add(this.productColorSizeToProductColorSizeDto(e));
+        });
+        return dtos;
+    }
+    public List<ColorProductDto> productColorsToProductColorsDto(List<ProductColor> entities){
+        List<ColorProductDto> dtos = new ArrayList<>();
+        entities.forEach(e->{
+            dtos.add(this.productColorToProductColorDto(e));
+        });
+        return dtos;
+    }
+    public List<PriceDto> pricesToPricesDto(List<Price> entities){
+        List<PriceDto> dtos = new ArrayList<>();
+        entities.forEach(e->{
+            dtos.add(this.priceToPriceDto(e));
+        });
+        return dtos;
+    }
+    public ProductDto productToProductDto(Product entity){
+        ProductDto dto = new ProductDto();
+        dto.setId(entity.getId());
+        dto.setProductName(entity.getProductName());
+        dto.setDescription(entity.getDescription());
+        dto.setColor(this.productColorsToProductColorsDto(entity.getProductColors().stream().collect(Collectors.toList())));
+        dto.setBrand(this.brandToBrandDto(entity.getBrand()));
+        dto.setLabel(this.labelToLabelDto(entity.getLabel()));
+        dto.setStuff(this.stuffToStuffDto(entity.getStuff()));
+        dto.setGender(this.genderToGenderDto(entity.getGender()));
+        dto.setPrice(this.pricesToPricesDto(entity.getPrices().stream().collect(Collectors.toList())));
+        dto.setVersion(entity.getVersion());
+        dto.setIsActive(entity.getIsActive());
+        dto.setImg(entity.getImage());
+        return dto;
     }
 }

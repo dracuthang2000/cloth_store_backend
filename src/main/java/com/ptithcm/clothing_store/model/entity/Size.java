@@ -21,5 +21,5 @@ public class Size extends IdAndVersion {
     @Enumerated(EnumType.STRING)
     private EnumSize size;
     @OneToMany(mappedBy = "size")
-    private List<ProductSize> productSizes;
+    private List<ProductColorSize> productColorSizes;
 }

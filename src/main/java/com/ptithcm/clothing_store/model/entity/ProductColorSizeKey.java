@@ -7,18 +7,16 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-@Embeddable
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class ProductSizeKey implements Serializable {
-    @Column(name = "id_product")
-    private Long productId;
+@Embeddable
+public class ProductColorSizeKey implements Serializable {
     @Column(name = "id_size")
     private Long sizeId;
+    @Column(name = "id_product_color")
+    private Long productColorId;
 }
