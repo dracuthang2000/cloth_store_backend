@@ -24,7 +24,7 @@ import java.util.Set;
                 @NamedAttributeNode("label"),
                 @NamedAttributeNode("stuff"),
                 @NamedAttributeNode("gender"),
-                @NamedAttributeNode("productDiscounts"),
+                @NamedAttributeNode(value = "productDiscounts",subgraph = "sub-discount"),
                 @NamedAttributeNode(value = "productColors",subgraph = "subgraph.product-color-size")
         },
         subgraphs ={
@@ -34,7 +34,9 @@ import java.util.Set;
                                 ,@NamedAttributeNode(value = "productColorSize",subgraph = "sub-size")
                 }),
                 @NamedSubgraph(name = "sub-size"
-                        ,attributeNodes = {@NamedAttributeNode("size")})
+                        ,attributeNodes = {@NamedAttributeNode("size")}),
+                @NamedSubgraph(name = "sub-discount"
+                        ,attributeNodes ={@NamedAttributeNode("discount")})
         }
 )
 public class Product extends IdAndVersion {
@@ -46,6 +48,10 @@ public class Product extends IdAndVersion {
     private String image;
     @Column(name = "is_active")
     private Boolean isActive;
+    @Column(name = "price")
+    private Long price;
+    @Column(name = "is_new")
+    private Boolean isNew;
     @OneToMany(mappedBy = "product")
     private Set<ProductColor> productColors;
     @ManyToOne

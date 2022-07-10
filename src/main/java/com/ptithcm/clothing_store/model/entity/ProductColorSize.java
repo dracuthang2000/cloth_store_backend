@@ -14,16 +14,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class ProductColorSize {
-    @EmbeddedId
-    private ProductColorSizeKey id;
+    @Id
+    private Long id;
     @Column(name = "quantity")
     private Integer quantity;
     @ManyToOne
     @JoinColumn(name = "id_product_color",referencedColumnName = "id")
-    @MapsId("productColorId")
     private ProductColor productColor;
     @ManyToOne
     @JoinColumn(name = "id_size",referencedColumnName = "id")
-    @MapsId("sizeId")
     private Size size;
 }

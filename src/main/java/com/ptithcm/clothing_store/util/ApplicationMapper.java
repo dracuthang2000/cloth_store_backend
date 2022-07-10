@@ -3,15 +3,14 @@ package com.ptithcm.clothing_store.util;
 import com.google.gson.Gson;
 import com.ptithcm.clothing_store.model.dto.*;
 import com.ptithcm.clothing_store.model.entity.*;
+import org.hibernate.mapping.Collection;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -158,6 +157,7 @@ public class ApplicationMapper {
     }
     public ProductColorSizeDto productColorSizeToProductColorSizeDto(ProductColorSize entity){
         ProductColorSizeDto dto = new ProductColorSizeDto();
+        dto.setId(entity.getId());
         dto.setQuantity(entity.getQuantity());
         dto.setSize(this.sizeToSizeDto(entity.getSize()));
         return dto;
@@ -176,6 +176,28 @@ public class ApplicationMapper {
         dto.setStartDate(entity.getStartDate());
         dto.setVersion(entity.getVersion());
         return dto;
+    }
+    public DiscountDto discountToDiscountDto(Discount entity){
+        DiscountDto dto = new DiscountDto();
+        dto.setId(entity.getId());
+        dto.setPercent(entity.getPercent());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public ProductDiscountDto productDiscountToProductDiscountDto(ProductDiscount entity){
+        ProductDiscountDto dto = new ProductDiscountDto();
+        dto.setDiscount(this.discountToDiscountDto(entity.getDiscount()));
+        dto.setStartDate(entity.getStartDate());
+        dto.setEndDate(entity.getEndDate());
+        dto.setVersion(entity.getVersion());
+        return dto;
+    }
+    public List<ProductDiscountDto> productDiscountsToProductDiscountDtos(List<ProductDiscount> entities){
+        List<ProductDiscountDto> dtos = new ArrayList<>();
+        entities.forEach(e->{
+            dtos.add(this.productDiscountToProductDiscountDto(e));
+        });
+        return dtos;
     }
     public List<ProductColorSizeDto> productColorSizeListToProductColorSizeDtoList(List<ProductColorSize> entities){
         List<ProductColorSizeDto> dtos = new ArrayList<>();
@@ -208,10 +230,20 @@ public class ApplicationMapper {
         dto.setLabel(this.labelToLabelDto(entity.getLabel()));
         dto.setStuff(this.stuffToStuffDto(entity.getStuff()));
         dto.setGender(this.genderToGenderDto(entity.getGender()));
-        dto.setPrice(this.pricesToPricesDto(entity.getPrices().stream().collect(Collectors.toList())));
+        dto.setPriceLog(this.pricesToPricesDto(entity.getPrices().stream().collect(Collectors.toList())));
         dto.setVersion(entity.getVersion());
         dto.setIsActive(entity.getIsActive());
+        dto.setPrice(entity.getPrice());
         dto.setImg(entity.getImage());
+        dto.setIsNew(entity.getIsNew());
+        dto.setDiscounts(this.productDiscountsToProductDiscountDtos(entity.getProductDiscounts().stream().collect(Collectors.toList())));
+        if(dto.getDiscounts().size()!=0) {
+            dto.getDiscounts().forEach(d->{
+                if(DiscountUtil.discountNow(d)){
+                    dto.setDiscount(d.getDiscount());
+                }
+            });
+        }
         return dto;
     }
 }

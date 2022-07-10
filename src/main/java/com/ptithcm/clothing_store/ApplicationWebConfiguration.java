@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
@@ -79,6 +81,19 @@ public class ApplicationWebConfiguration extends SpringBootServletInitializer {
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedHeaders("GET","POST","PUT","DELETE")
+                        .allowedHeaders("*")
+                        .allowedOrigins("*");
+            }
+        };
     }
 
 }

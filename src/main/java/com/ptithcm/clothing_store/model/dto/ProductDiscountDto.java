@@ -6,12 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductColorSizeDto {
-    private Long id;
-    private SizeDto size;
-    private Integer quantity;
+public class ProductDiscountDto {
+    @JsonProperty("start_date")
+    private LocalDate startDate;
+    @JsonProperty("end_date")
+    private LocalDate endDate;
+    private DiscountDto discount;
+    private Long version;
 }

@@ -14,6 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedEntityGraph(
+        name = "graph-product-color",
+        attributeNodes = {
+                @NamedAttributeNode(value = "productColorSize",subgraph = "sub-size")
+                ,@NamedAttributeNode("color")
+        },
+        subgraphs = {
+                @NamedSubgraph(name = "sub-size"
+                        ,attributeNodes = {@NamedAttributeNode("size")})
+        }
+        )
 public class ProductColor extends IdAndVersion {
     @ManyToOne
     @JoinColumn(name = "id_color", referencedColumnName = "id")

@@ -20,11 +20,18 @@ public class ProductDto {
     private String img;
     private BrandDto brand;
     private List<ColorProductDto> color;
-    private List<PriceDto> price;
+    @JsonProperty("price_log")
+    private List<PriceDto> priceLog;
+    @JsonProperty("discount_log")
+    private List<ProductDiscountDto> discounts;
+    private DiscountDto discount;
     private StuffDto stuff;
     private LabelDto label;
     private GenderDto gender;
+    private Long price;
     @JsonProperty("is_active")
     private Boolean isActive;
     private Long version;
+    @JsonProperty("is_new")
+    private Boolean isNew;
 }
