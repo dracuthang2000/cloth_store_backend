@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "STAFF")
@@ -15,16 +18,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Staff{
+public class Staff implements Serializable {
     @Id
-    @Column(name = "id")
     private Long id;
-
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id",referencedColumnName = "id")
-    @MapsId
+    @MapsId("id")
     private Person person;
-    @OneToOne
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
+    @JoinColumn(name = "username",referencedColumnName = "username")
     private Account accountStaff;
+    @OneToMany(mappedBy = "staff")
+    private Set<Order> orders = new HashSet<>();
+    public void setPerson(Person person) {
+        this.person = person;
+        this.id = person.getId();
+    }
 }

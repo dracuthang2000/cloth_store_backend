@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ROLE")
@@ -20,5 +22,5 @@ public class Role extends IdAndVersion {
     @Enumerated(EnumType.STRING)
     private EnumRole role;
     @OneToMany(mappedBy = "role")
-    private List<Account> accounts;
+    private Set<Account> accounts = new HashSet<>();
 }

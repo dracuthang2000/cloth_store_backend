@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCT_COLOR_SIZE")
@@ -24,4 +25,6 @@ public class ProductColorSize {
     @ManyToOne
     @JoinColumn(name = "id_size",referencedColumnName = "id")
     private Size size;
+    @OneToMany(mappedBy = "productColorSize")
+    private Set<BillProductDetail> billProductDetails;
 }

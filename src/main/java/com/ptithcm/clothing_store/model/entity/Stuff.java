@@ -9,7 +9,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "STUFF")
@@ -21,5 +23,5 @@ public class Stuff extends IdAndVersion {
     @Column(name = "stuff_name")
     private String stuffName;
     @OneToMany(mappedBy = "stuff")
-    List<Product> products;
+    Set<Product> products = new HashSet<>();
 }

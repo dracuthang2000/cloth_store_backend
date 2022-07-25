@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "SIZE")
@@ -21,5 +23,5 @@ public class Size extends IdAndVersion {
     @Enumerated(EnumType.STRING)
     private EnumSize size;
     @OneToMany(mappedBy = "size")
-    private List<ProductColorSize> productColorSizes;
+    private Set<ProductColorSize> productColorSizes = new HashSet<>();
 }

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "GENDER")
@@ -20,5 +22,5 @@ public class Gender extends IdAndVersion {
     @Column(name = "gender_name")
     private EnumGender genderName;
     @OneToMany(mappedBy = "gender")
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 }

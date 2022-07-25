@@ -29,6 +29,7 @@ public class ProductDto {
     private LabelDto label;
     private GenderDto gender;
     private Long price;
+    private String tag;
     @JsonProperty("is_active")
     private Boolean isActive;
     private Long version;

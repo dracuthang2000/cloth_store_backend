@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,8 +53,10 @@ public class Product extends IdAndVersion {
     private Long price;
     @Column(name = "is_new")
     private Boolean isNew;
+    @Column(name = "tag")
+    private String tag;
     @OneToMany(mappedBy = "product")
-    private Set<ProductColor> productColors;
+    private Set<ProductColor> productColors = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "id_label",referencedColumnName = "id")
     private Label label;
@@ -67,7 +70,7 @@ public class Product extends IdAndVersion {
     @JoinColumn(name = "id_gender",referencedColumnName = "id")
     private Gender gender;
     @OneToMany(mappedBy = "product")
-    private Set<Price> prices;
+    private Set<Price> prices = new HashSet<>();
     @OneToMany(mappedBy = "product")
-    private Set<ProductDiscount> productDiscounts;
+    private Set<ProductDiscount> productDiscounts = new HashSet<>();
 }

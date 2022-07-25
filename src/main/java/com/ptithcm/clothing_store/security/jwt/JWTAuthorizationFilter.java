@@ -1,6 +1,6 @@
 package com.ptithcm.clothing_store.security.jwt;
 
-import com.ptithcm.clothing_store.util.ApplicationMapper;
+import com.ptithcm.clothing_store.mapper.ApplicationUserMapper;
 import com.ptithcm.clothing_store.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -52,7 +51,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         // Once we get the token validate it.
         if (data != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = new ApplicationMapper().jsonToUserDetail(data);
+            UserDetails userDetails = new ApplicationUserMapper().jsonToUserDetail(data);
 
             // if token is valid configure Spring Security to manually set
             // authentication

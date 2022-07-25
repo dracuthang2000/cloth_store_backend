@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -25,6 +27,9 @@ public class Customer implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
     @JoinColumn(name = "username",referencedColumnName = "username")
     private Account accountCustomer;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Bill> bills = new HashSet<>();
 
     public void setPerson(Person person) {
         this.person = person;

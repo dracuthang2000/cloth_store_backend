@@ -2,7 +2,7 @@ package com.ptithcm.clothing_store;
 import com.ptithcm.clothing_store.model.exception.ApplicationHandleException;
 import com.ptithcm.clothing_store.security.SecurityConfigurer;
 import com.ptithcm.clothing_store.service.CustomerService;
-import com.ptithcm.clothing_store.util.ApplicationMapper;
+import com.ptithcm.clothing_store.mapper.ApplicationProductMapper;
 import com.ptithcm.clothing_store.web.AbstractApplicationController;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -30,7 +30,7 @@ import java.util.*;
 @SpringBootApplication(scanBasePackages = "com.ptithcm.clothing_store")
 @ComponentScan(basePackageClasses = {
         AbstractApplicationController.class,
-        ApplicationMapper.class,
+        ApplicationProductMapper.class,
         SecurityConfigurer.class,
         ApplicationHandleException.class,
         CustomerService.class,

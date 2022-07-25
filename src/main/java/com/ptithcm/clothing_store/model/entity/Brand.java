@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "BRAND")
@@ -20,5 +21,5 @@ public class Brand extends IdAndVersion{
     private String brandName;
     private String image;
     @OneToMany(mappedBy = "brand")
-    private List<Product> products;
+    private Set<Product> products = new HashSet<>();
 }

@@ -17,8 +17,6 @@ import java.time.LocalDate;
 public class ProductDiscount {
     @EmbeddedId
     private ProductDiscountKey id;
-    @Column(name = "start_date")
-    private LocalDate startDate;
     @Column(name = "end_date")
     private LocalDate endDate;
     @ManyToOne

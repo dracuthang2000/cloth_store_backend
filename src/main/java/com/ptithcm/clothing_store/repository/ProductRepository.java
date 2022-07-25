@@ -15,4 +15,8 @@ public interface ProductRepository extends JpaRepository<Product,Long>, Querydsl
     List<Product> findAll();
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "graph-product")
     Optional<Product> findById(Long id);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "graph-product")
+    List<Product> findAllByIsNew(Boolean isNew);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "graph-product")
+    Optional<Product> findByTag(String tag);
 }

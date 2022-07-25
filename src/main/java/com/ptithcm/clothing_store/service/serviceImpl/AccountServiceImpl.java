@@ -20,6 +20,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findById(String username) {
         return accountRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username can't found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Username or password is incorrect!"));
     }
 }

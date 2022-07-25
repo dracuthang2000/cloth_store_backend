@@ -43,7 +43,7 @@ public class CustomerController extends AbstractApplicationController {
 
             // set authentication in security context holder
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDto userDto = mapper.mapperUser(customerService.findCustomerByUsername(jwtRequest.getUsername()));
+            UserDto userDto = userMapper.mapperUser(customerService.findCustomerByUsername(jwtRequest.getUsername()));
 
 
             // generate new JWT token
@@ -61,9 +61,9 @@ public class CustomerController extends AbstractApplicationController {
     public ResponseEntity<Object> getInfoCustomer(HttpServletRequest request) {
         String requestTokenHeader = request.getHeader("Authorization");
         String data = jwtUtil.getUsernameFromToken(requestTokenHeader.substring(7));
-        UserDto user = mapper.jsonToUserDto(data);
+        UserDto user = userMapper.jsonToUserDto(data);
         return new ResponseEntity<Object>(
-                mapper.mapperUser(customerService.findCustomerById(user.getId()))
+                userMapper.mapperUser(customerService.findCustomerById(user.getId()))
                 , HttpStatus.OK);
     }
 
@@ -86,14 +86,14 @@ public class CustomerController extends AbstractApplicationController {
     @PostMapping("create")
     public String createCustomer(@RequestBody PersonDto personDto) {
         personDto.setId(0l);
-        Customer customer = mapper.personDtoToCustomer(personDto);
+        Customer customer = customerMapper.personDtoToCustomer(personDto);
         return customerService.save(customer);
     }
 
     @PutMapping("update-customer/{id}")
     public String updateCustomer(@PathVariable("id") Long id, @RequestBody PersonUpdateDto personDto) {
         personDto.setId(id);
-        Customer customer = mapper.personUpdateDtoToCustomer(personDto);
+        Customer customer = customerMapper.personUpdateDtoToCustomer(personDto);
         customer.setAccountCustomer(accountService.findById(personDto.getUsername()));
         return customerService.save(customer);
     }
