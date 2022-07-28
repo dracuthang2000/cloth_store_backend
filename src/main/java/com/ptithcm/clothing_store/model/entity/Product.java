@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,7 @@ import java.util.Set;
                 @NamedAttributeNode("prices"),
                 @NamedAttributeNode("brand"),
                 @NamedAttributeNode("label"),
-                @NamedAttributeNode("stuff"),
+                @NamedAttributeNode("material"),
                 @NamedAttributeNode("gender"),
                 @NamedAttributeNode(value = "productDiscounts",subgraph = "sub-discount"),
                 @NamedAttributeNode(value = "productColors",subgraph = "subgraph.product-color-size")
@@ -64,8 +63,8 @@ public class Product extends IdAndVersion {
     @JoinColumn(name = "id_brand", referencedColumnName = "id")
     private Brand brand;
     @ManyToOne
-    @JoinColumn(name = "id_stuff",referencedColumnName = "id")
-    private Stuff stuff;
+    @JoinColumn(name = "id_material",referencedColumnName = "id")
+    private Material material;
     @ManyToOne
     @JoinColumn(name = "id_gender",referencedColumnName = "id")
     private Gender gender;

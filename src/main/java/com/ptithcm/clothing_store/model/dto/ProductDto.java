@@ -25,7 +25,7 @@ public class ProductDto {
     @JsonProperty("discount_log")
     private List<ProductDiscountDto> discounts;
     private DiscountDto discount;
-    private StuffDto stuff;
+    private MaterialDto material;
     private LabelDto label;
     private GenderDto gender;
     private Long price;

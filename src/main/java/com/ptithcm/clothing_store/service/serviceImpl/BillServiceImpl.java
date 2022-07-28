@@ -33,4 +33,13 @@ public class BillServiceImpl implements BillService {
         billRepository.save(bill);
         return SUCCESS;
     }
+
+    @Override
+    public List<Bill> findByCustomerId(Long id) {
+        List<Bill> bills = billRepository.findByCustomerId(id);
+        if(bills.size() == 0){
+            throw new ResourceNotFoundException("Can't found bill");
+        }
+        return bills;
+    }
 }

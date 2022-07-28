@@ -30,4 +30,7 @@ public class Orders extends IdAndVersion{
     @ManyToOne
     @JoinColumn(name = "id_staff",referencedColumnName = "id")
     private Staff staff;
+    @ManyToOne
+    @JoinColumn(name = "id_driver",  referencedColumnName = "id")
+    private Staff driver;
 }

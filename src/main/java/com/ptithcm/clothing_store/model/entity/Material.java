@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "STUFF")
+@Table(name = "MATERIAL")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Stuff extends IdAndVersion {
-    @Column(name = "stuff_name")
-    private String stuffName;
-    @OneToMany(mappedBy = "stuff")
+public class Material extends IdAndVersion {
+    @Column(name = "material_name")
+    private String materialName;
+    @OneToMany(mappedBy = "material")
     Set<Product> products = new HashSet<>();
 }

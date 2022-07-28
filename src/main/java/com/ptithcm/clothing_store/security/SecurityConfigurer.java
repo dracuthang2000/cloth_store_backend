@@ -23,13 +23,15 @@ public class SecurityConfigurer {
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/customer/login")
                 .permitAll()
                 .antMatchers("/customer/**")
-                .hasAnyRole("CUSTOMER","STAFF")
+                .hasAnyRole("CUSTOMER","STAFF","ADMIN")
                 .antMatchers("/customer/test2")
                 .authenticated()
                 .anyRequest()

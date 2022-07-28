@@ -15,4 +15,6 @@ public interface BillRepository extends JpaRepository<Bill,Long>, QuerydslPredic
     List<Bill> findAll();
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
     Optional<Bill> findById(Long id);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
+    List<Bill> findByCustomerId(Long id);
 }

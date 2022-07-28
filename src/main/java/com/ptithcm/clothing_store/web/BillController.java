@@ -40,17 +40,23 @@ public class BillController extends AbstractApplicationController {
         return new ResponseEntity<>(billMapper.billToBillDto(billService.findById(id)), HttpStatus.OK);
     }
 
+
+    @GetMapping("get-bill-by-customer-id/{id}")
+    public ResponseEntity<Object> getBillByCustomerId(@PathVariable("id")Long id){
+        return new ResponseEntity<>(billService.findByCustomerId(id)
+                .stream()
+                .map(billMapper::billToBillDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
     @PostMapping("create-bill")
     public ResponseEntity<Object> createBill(@RequestBody BillUpdateDto req){
-        req.setId(0l);
         Bill entity = billMapper.billDtoToBill(req);
         Orders orders = new Orders();
         req.getBillProductDetails().forEach((res)-> {
                     BillProductDetail detail = new BillProductDetail();
                     ProductColorSize productColorSize = new ProductColorSize();
                     detail = billMapper.billProductDetailDtoToBillProductDetail(res);
-                    detail.setId(0l);
-                    detail.setVersion(0l);
                     productColorSize.setId(res.getIdProductColorSizeDto());
                     detail.setProductColorSize(productColorSize);
                     entity.addBillDetail(detail);
@@ -58,8 +64,6 @@ public class BillController extends AbstractApplicationController {
         entity.setCustomer(customerService.findCustomerById(req.getIdCustomer()));
         orders.setState(req.getState());
         orders.setStartDate(req.getDate());
-        orders.setId(0l);
-        orders.setVersion(0l);
         entity.addOrder(orders);
         return new ResponseEntity<>(billService.save(entity),HttpStatus.OK);
     }

@@ -1,14 +1,9 @@
 package com.ptithcm.clothing_store.mapper;
 
-import com.google.gson.Gson;
 import com.ptithcm.clothing_store.model.dto.*;
 import com.ptithcm.clothing_store.model.entity.*;
 import com.ptithcm.clothing_store.util.DiscountUtil;
-import org.hibernate.mapping.Collection;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -98,10 +93,10 @@ public class ApplicationProductMapper {
         dto.setSize(this.sizeToSizeDto(entity.getSize()));
         return dto;
     }
-    public StuffDto stuffToStuffDto(Stuff entity){
-        StuffDto dto = new StuffDto();
+    public MaterialDto materialToMaterialDto(Material entity){
+        MaterialDto dto = new MaterialDto();
         dto.setId(entity.getId());
-        dto.setStuff(entity.getStuffName());
+        dto.setMaterialName(entity.getMaterialName());
         dto.setVersion(entity.getVersion());
         return dto;
     }
@@ -179,7 +174,7 @@ public class ApplicationProductMapper {
         dto.setColor(this.productColorsToProductColorsDto(entity.getProductColors().stream().collect(Collectors.toList())));
         dto.setBrand(this.brandToBrandDto(entity.getBrand()));
         dto.setLabel(this.labelToLabelDto(entity.getLabel()));
-        dto.setStuff(this.stuffToStuffDto(entity.getStuff()));
+        dto.setMaterial(this.materialToMaterialDto(entity.getMaterial()));
         dto.setGender(this.genderToGenderDto(entity.getGender()));
         dto.setPriceLog(this.pricesToPricesDto(entity.getPrices().stream().collect(Collectors.toList())));
         dto.setVersion(entity.getVersion());

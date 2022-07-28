@@ -7,4 +7,5 @@ public interface BillService {
     List<Bill> findAll();
     Bill findById(Long id);
     String save(Bill bill);
+    List<Bill> findByCustomerId(Long id);
 }

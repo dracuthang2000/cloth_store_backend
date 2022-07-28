@@ -39,4 +39,6 @@ public class Staff extends IdAndVersion{
     private Account accountStaff;
     @OneToMany(mappedBy = "staff")
     private Set<Orders> orders;
+    @OneToMany(mappedBy = "driver")
+    private Set<Orders> driver;
 }

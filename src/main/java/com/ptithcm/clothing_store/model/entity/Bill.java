@@ -36,7 +36,7 @@ import java.util.Set;
                     @NamedAttributeNode("prices"),
                     @NamedAttributeNode("brand"),
                     @NamedAttributeNode("label"),
-                    @NamedAttributeNode("stuff"),
+                    @NamedAttributeNode("material"),
                     @NamedAttributeNode("gender"),
                     @NamedAttributeNode(value = "productDiscounts",subgraph = "sub-discount"),
             }),

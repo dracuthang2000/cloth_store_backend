@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-public class StuffDto {
+public class MaterialDto {
     private Long id;
-    private String stuff;
+    @JsonProperty("material_name")
+    private String materialName;
     private Long version;
 }

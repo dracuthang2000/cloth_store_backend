@@ -9,6 +9,7 @@ import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.security.CustomAuthenticationManager;
 import com.ptithcm.clothing_store.security.jwt.JWTResponse;
 import com.ptithcm.clothing_store.service.AccountService;
+import com.ptithcm.clothing_store.service.BillService;
 import com.ptithcm.clothing_store.service.CustomerService;
 import com.ptithcm.clothing_store.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customer/")
 public class CustomerController extends AbstractApplicationController {
+    @Autowired
+    private BillService billService;
     private volatile UserDto count = null;
     @Autowired
     private CustomAuthenticationManager authenticationManager;
@@ -71,7 +75,16 @@ public class CustomerController extends AbstractApplicationController {
                 userMapper.mapperUser(customerService.findCustomerById(user.getId()))
                 , HttpStatus.OK);
     }
-
+    @GetMapping("bill/bill-by-me")
+    public ResponseEntity<Object> getBillByMySelf(HttpServletRequest request){
+        String requestTokenHeader = request.getHeader("Authorization");
+        String data = jwtUtil.getUsernameFromToken(requestTokenHeader.substring(7));
+        UserDto user = userMapper.jsonToUserDto(data);
+        return new ResponseEntity<>(billService.findByCustomerId(user.getId())
+                .stream()
+                .map(billMapper::billToBillDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
     @GetMapping(value = "image/{image}")
     public ResponseEntity<Object> loadImageProduct(@PathVariable("image")String image){
         try{

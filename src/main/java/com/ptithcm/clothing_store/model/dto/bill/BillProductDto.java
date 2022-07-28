@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,7 +18,7 @@ public class BillProductDto {
     private String description;
     private String img;
     private BrandDto brand;
-    private StuffDto stuff;
+    private MaterialDto material;
     private LabelDto label;
     private GenderDto gender;
 }

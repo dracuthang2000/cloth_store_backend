@@ -93,7 +93,7 @@ public class ApplicationBillMapper {
         dto.setDescription(entity.getDescription());
         dto.setBrand(new ApplicationProductMapper().brandToBrandDto(entity.getBrand()));
         dto.setLabel(new ApplicationProductMapper().labelToLabelDto(entity.getLabel()));
-        dto.setStuff(new ApplicationProductMapper().stuffToStuffDto(entity.getStuff()));
+        dto.setMaterial(new ApplicationProductMapper().materialToMaterialDto(entity.getMaterial()));
         dto.setGender(new ApplicationProductMapper().genderToGenderDto(entity.getGender()));
         dto.setImg(entity.getImage());
         return dto;
