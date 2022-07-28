@@ -22,16 +22,16 @@ public class ApplicationUserMapper {
         UserDto dto = new UserDto();
         dto.setUsername(entity.getAccountCustomer().getUsername());
         dto.setRoleDto(this.roleToRoleDto(entity.getAccountCustomer().getRole()));
-        dto.setFirstName(entity.getPerson().getFirstName());
-        dto.setLastName(entity.getPerson().getLastName());
-        dto.setMail(entity.getPerson().getMail());
-        dto.setAddress(entity.getPerson().getAddress());
-        dto.setBirthDate(entity.getPerson().getBirthDate());
-        dto.setId(entity.getPerson().getId());
-        dto.setIdCard(entity.getPerson().getIdCard());
-        dto.setPhoneNumber(entity.getPerson().getPhoneNumber());
-        dto.setVersion(entity.getPerson().getVersion());
-        dto.setGender(entity.getPerson().getGender());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setMail(entity.getMail());
+        dto.setAddress(entity.getAddress());
+        dto.setBirthDate(entity.getBirthDate());
+        dto.setId(entity.getId());
+        dto.setIdCard(entity.getIdCard());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setVersion(entity.getVersion());
+        dto.setGender(entity.getGender());
         return dto;
     }
 

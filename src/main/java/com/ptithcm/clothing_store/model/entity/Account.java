@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -14,6 +13,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@NamedEntityGraph(
+        name = "account_graphic",
+        attributeNodes = {@NamedAttributeNode(value = "role")}
+)
 public class Account{
     @Id
     @Column(name = "username")

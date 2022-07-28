@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PersonDto {
+public class CustomerDto {
 
     @JsonProperty("id")
     private Long id;

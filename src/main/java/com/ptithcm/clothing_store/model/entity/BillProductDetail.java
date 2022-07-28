@@ -18,7 +18,7 @@ public class BillProductDetail extends IdAndVersion {
     private Integer quantity;
     @Column(name = "unit_price")
     private Long unitPrice;
-    @ManyToOne
+    @ManyToOne(optional = true,cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_bill",referencedColumnName = "id")
     private Bill bill;
     @ManyToOne
@@ -26,4 +26,9 @@ public class BillProductDetail extends IdAndVersion {
     private ProductColorSize productColorSize;
     @OneToMany(mappedBy = "billProductDetail")
     private Set<RefundChange> refundChanges;
+
+    public void addBill(Bill bill){
+        bill.getBillProductDetails().add(this);
+        this.setBill(bill);
+    }
 }

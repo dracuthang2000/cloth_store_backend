@@ -1,17 +1,21 @@
 package com.ptithcm.clothing_store.web;
 
-import com.ptithcm.clothing_store.model.dto.PersonDto;
+import com.ptithcm.clothing_store.model.dto.CustomerDto;
 import com.ptithcm.clothing_store.model.dto.JwtRequest;
-import com.ptithcm.clothing_store.model.dto.PersonUpdateDto;
+import com.ptithcm.clothing_store.model.dto.CustomerUpdateDto;
 import com.ptithcm.clothing_store.model.dto.UserDto;
 import com.ptithcm.clothing_store.model.entity.Customer;
+import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.security.CustomAuthenticationManager;
 import com.ptithcm.clothing_store.security.jwt.JWTResponse;
 import com.ptithcm.clothing_store.service.AccountService;
 import com.ptithcm.clothing_store.service.CustomerService;
 import com.ptithcm.clothing_store.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/customer/")
@@ -43,7 +48,7 @@ public class CustomerController extends AbstractApplicationController {
 
             // set authentication in security context holder
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDto userDto = userMapper.mapperUser(customerService.findCustomerByUsername(jwtRequest.getUsername()));
+            UserDto userDto = userMapper.mapperUser(customerService.findPersonByUsername(jwtRequest.getUsername()));
 
 
             // generate new JWT token
@@ -67,33 +72,30 @@ public class CustomerController extends AbstractApplicationController {
                 , HttpStatus.OK);
     }
 
-    @GetMapping("test2")
-    public String get1() throws InterruptedException {
-        UserDto result = count;
-        if (result == null) {
-            synchronized (this) {
-                System.out.println("check");
-                result = count;
-                Thread.sleep(10000);
-                if (result == null) {
-                    count = result = new UserDto();
-                }
-            }
+    @GetMapping(value = "image/{image}")
+    public ResponseEntity<Object> loadImageProduct(@PathVariable("image")String image){
+        try{
+            var imgFile = new ClassPathResource("image/"+image);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(new InputStreamResource(imgFile.getInputStream()));
+        }catch (IOException e){
+            throw new ResourceNotFoundException("Image can't found");
         }
-        return count.toString();
     }
 
     @PostMapping("create")
-    public String createCustomer(@RequestBody PersonDto personDto) {
-        personDto.setId(0l);
-        Customer customer = customerMapper.personDtoToCustomer(personDto);
+    public String createCustomer(@RequestBody CustomerDto customerDto) {
+        customerDto.setId(0l);
+        Customer customer = customerMapper.customerDtoToCustomer(customerDto);
         return customerService.save(customer);
     }
 
     @PutMapping("update-customer/{id}")
-    public String updateCustomer(@PathVariable("id") Long id, @RequestBody PersonUpdateDto personDto) {
+    public String updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerUpdateDto personDto) {
         personDto.setId(id);
-        Customer customer = customerMapper.personUpdateDtoToCustomer(personDto);
+        Customer customer = customerMapper.customerUpdateToCustomer(personDto);
         customer.setAccountCustomer(accountService.findById(personDto.getUsername()));
         return customerService.save(customer);
     }

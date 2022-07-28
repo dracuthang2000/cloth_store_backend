@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -26,6 +28,13 @@ public class ApplicationProductMapper {
         dto.setVersion(entity.getVersion());
         return dto;
     }
+    public Color ColorDtoToColor(ColorDto dto){
+        Color entity = new Color();
+        entity.setColor(dto.getColor());
+        entity.setId(dto.getId());
+        entity.setVersion(dto.getVersion());
+        return entity;
+    }
     public ColorProductDto productColorToProductColorDto(ProductColor entity){
         ColorProductDto dto = new ColorProductDto();
         dto.setId(entity.getId());
@@ -34,6 +43,17 @@ public class ApplicationProductMapper {
         dto.setColor(this.ColorToColorDto(entity.getColor()));
         dto.setProductColorSizesDto(this.productColorSizeListToProductColorSizeDtoList(entity.getProductColorSize().stream().collect(Collectors.toList())));
         return dto;
+    }
+    public ProductColor productColorDtoToProductColor(ColorProductDto dto){
+        ProductColor entity = new ProductColor();
+        entity.setId(dto.getId());
+        entity.setImage(dto.getImg());
+        entity.setVersion(dto.getVersion());
+        entity.setColor(this.ColorDtoToColor(dto.getColor()));
+        entity.setProductColorSize(
+                this.productColorSizeDtoListToProductColorSizeList(
+                dto.getProductColorSizesDto().stream().collect(Collectors.toSet())));
+        return entity;
     }
     public BrandDto brandToBrandDto(Brand entity){
         BrandDto dto = new BrandDto();
@@ -63,6 +83,13 @@ public class ApplicationProductMapper {
         dto.setSize(entity.getSize());
         dto.setVersion(entity.getVersion());
         return dto;
+    }
+    public Size sizeDtoToSize(SizeDto dto){
+        Size entity = new Size();
+        entity.setId(dto.getId());
+        entity.setSize(dto.getSize());
+        entity.setVersion(dto.getVersion());
+        return entity;
     }
     public ProductColorSizeDto productColorSizeToProductColorSizeDto(ProductColorSize entity){
         ProductColorSizeDto dto = new ProductColorSizeDto();
@@ -115,6 +142,13 @@ public class ApplicationProductMapper {
         });
         return dtos;
     }
+    public Set<ProductColorSize> productColorSizeDtoListToProductColorSizeList(Set<ProductColorSizeDto> dtos){
+        Set<ProductColorSize> entities = new HashSet<>();
+        dtos.forEach(e->{
+            entities.add(this.productColorSizeDtoToProductColorSize(e));
+        });
+        return entities;
+    }
     public List<ColorProductDto> productColorsToProductColorsDto(List<ProductColor> entities){
         List<ColorProductDto> dtos = new ArrayList<>();
         entities.forEach(e->{
@@ -128,6 +162,14 @@ public class ApplicationProductMapper {
             dtos.add(this.priceToPriceDto(e));
         });
         return dtos;
+    }
+    public ProductColorSize productColorSizeDtoToProductColorSize(ProductColorSizeDto dto){
+        ProductColorSize entity = new ProductColorSize();
+        entity.setId(dto.getId());
+        entity.setQuantity(dto.getQuantity());
+        entity.setSize(this.sizeDtoToSize(dto.getSize()));
+        entity.setProductColor(this.productColorDtoToProductColor(dto.getColor()));
+        return entity;
     }
     public ProductDto productToProductDto(Product entity){
         ProductDto dto = new ProductDto();

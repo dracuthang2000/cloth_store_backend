@@ -1,9 +1,8 @@
 package com.ptithcm.clothing_store.mapper;
 
-import com.ptithcm.clothing_store.model.dto.PersonDto;
-import com.ptithcm.clothing_store.model.dto.PersonUpdateDto;
+import com.ptithcm.clothing_store.model.dto.CustomerDto;
+import com.ptithcm.clothing_store.model.dto.CustomerUpdateDto;
 import com.ptithcm.clothing_store.model.entity.Customer;
-import com.ptithcm.clothing_store.model.entity.Person;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,39 +11,51 @@ public class ApplicationCustomerMapper {
 
     }
 
-    public Customer personDtoToCustomer(PersonDto personDto) {
-        Customer entity = new Customer();
-        Person person = new Person();
-        person.setId(personDto.getId());
-        person.setFirstName(personDto.getFirstName());
-        person.setLastName(personDto.getLastName());
-        person.setIdCard(personDto.getIdCard());
-        person.setBirthDate(personDto.getBirthDate());
-        person.setMail(personDto.getMail());
-        person.setGender(personDto.getGender());
-        person.setPhoneNumber(personDto.getPhoneNumber());
-        person.setAddress(personDto.getAddress());
-        person.setVersion(personDto.getVersion());
-        entity.setPerson(person);
-        entity.setAccountCustomer(new ApplicationUserMapper().accountDtoToAccount(personDto.getAccountDto()));
-        return entity;
+    public Customer customerDtoToCustomer(CustomerDto customerDto) {
+        Customer customer = new Customer();
+        customer.setId(customerDto.getId());
+        customer.setFirstName(customerDto.getFirstName());
+        customer.setLastName(customerDto.getLastName());
+        customer.setIdCard(customerDto.getIdCard());
+        customer.setBirthDate(customerDto.getBirthDate());
+        customer.setMail(customerDto.getMail());
+        customer.setGender(customerDto.getGender());
+        customer.setPhoneNumber(customerDto.getPhoneNumber());
+        customer.setAddress(customerDto.getAddress());
+        customer.setVersion(customerDto.getVersion());
+        customer.setAccountCustomer(new ApplicationUserMapper().accountDtoToAccount(customerDto.getAccountDto()));
+        return customer;
     }
 
-    public Customer personUpdateDtoToCustomer(PersonUpdateDto dto) {
-        Customer entity = new Customer();
-        Person person = new Person();
-        person.setId(dto.getId());
-        person.setFirstName(dto.getFirstName());
-        person.setLastName(dto.getLastName());
-        person.setIdCard(dto.getIdCard());
-        person.setBirthDate(dto.getBirthDate());
-        person.setMail(dto.getMail());
-        person.setGender(dto.getGender());
-        person.setPhoneNumber(dto.getPhoneNumber());
-        person.setAddress(dto.getAddress());
-        person.setVersion(dto.getVersion());
-        entity.setPerson(person);
-        return entity;
+
+    public CustomerDto customerToCustomerDto(Customer customer){
+        CustomerDto dto = new CustomerDto();
+        dto.setId(customer.getId());
+        dto.setAddress(customer.getAddress());
+        dto.setBirthDate(customer.getBirthDate());
+        dto.setFirstName(customer.getFirstName());
+        dto.setLastName(customer.getLastName());
+        dto.setIdCard(customer.getIdCard());
+        dto.setMail(customer.getMail());
+        dto.setPhoneNumber(customer.getPhoneNumber());
+        dto.setGender(customer.getGender());
+        dto.setVersion(customer.getVersion());
+        return dto;
+    }
+
+    public Customer customerUpdateToCustomer(CustomerUpdateDto dto) {
+        Customer customer = new Customer();
+        customer.setId(dto.getId());
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setIdCard(dto.getIdCard());
+        customer.setBirthDate(dto.getBirthDate());
+        customer.setMail(dto.getMail());
+        customer.setGender(dto.getGender());
+        customer.setPhoneNumber(dto.getPhoneNumber());
+        customer.setAddress(dto.getAddress());
+        customer.setVersion(dto.getVersion());
+        return customer;
     }
 
 }

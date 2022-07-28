@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PersonUpdateDto {
+public class CustomerUpdateDto {
     @JsonProperty("id")
     private Long id;
 

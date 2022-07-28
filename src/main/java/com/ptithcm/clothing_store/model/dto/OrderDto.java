@@ -1,6 +1,8 @@
 package com.ptithcm.clothing_store.model.dto;
 
 import com.ptithcm.clothing_store.model.Enum.EnumState;
+import com.ptithcm.clothing_store.model.dto.bill.BillDto;
+import com.ptithcm.clothing_store.model.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +20,5 @@ public class OrderDto {
     private LocalDate endDate;
     private String note;
     private BillDto bill;
-    private StaffDto staff;
+    private Customer staff;
 }

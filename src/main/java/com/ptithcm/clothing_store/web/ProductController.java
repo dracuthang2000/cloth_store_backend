@@ -2,20 +2,38 @@ package com.ptithcm.clothing_store.web;
 
 import com.ptithcm.clothing_store.model.dto.ProductDto;
 import com.ptithcm.clothing_store.model.entity.Product;
+import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.service.ProductColorService;
 import com.ptithcm.clothing_store.service.ProductService;
+import org.hibernate.engine.jdbc.ReaderInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product/")
 public class ProductController extends AbstractApplicationController {
+    private static final String URL_IMG="J:\\Thang\\propbation\\" +
+            "clothingstore-backend\\src\\main" +
+            "\\resources\\Image\\product\\";
     @Autowired
     private ProductService productService;
     @Autowired
@@ -61,5 +79,30 @@ public class ProductController extends AbstractApplicationController {
     @GetMapping("get-product-by-tag/{tag}")
     public ResponseEntity<Object> getProductByTag(@PathVariable("tag") String tag){
         return new ResponseEntity<>(mapper.productToProductDto(productService.findByTag(tag)),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "image/load/{image}")
+    public ResponseEntity<Object> loadImageProduct(@PathVariable("image")String image){
+        try{
+            Path path = Paths.get(URL_IMG + image);
+            byte[] bytes = Files.readAllBytes(path);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(bytes);
+        }catch (IOException e){
+            throw new ResourceNotFoundException("Image can't found");
+        }
+    }
+    @PostMapping(value = "image/upload",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile image){
+        try{
+            byte[] bytes = image.getBytes();
+            Path path = Paths.get(URL_IMG+image.getOriginalFilename());
+            Files.write(path, bytes);
+            return new ResponseEntity<>("SUCCESS",HttpStatus.OK);
+        }catch (IOException e){
+            throw new ResourceNotFoundException("Image can't found");
+        }
     }
 }

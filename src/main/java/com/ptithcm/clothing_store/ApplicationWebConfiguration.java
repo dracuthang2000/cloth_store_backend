@@ -1,16 +1,23 @@
 package com.ptithcm.clothing_store;
+
 import com.ptithcm.clothing_store.model.exception.ApplicationHandleException;
 import com.ptithcm.clothing_store.security.SecurityConfigurer;
 import com.ptithcm.clothing_store.service.CustomerService;
 import com.ptithcm.clothing_store.mapper.ApplicationProductMapper;
+import com.ptithcm.clothing_store.util.JwtUtil;
 import com.ptithcm.clothing_store.web.AbstractApplicationController;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
@@ -21,11 +28,11 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.servlet.MultipartConfigElement;
 import java.util.*;
 
 /**
  * @author gtn
- *
  */
 @SpringBootApplication(scanBasePackages = "com.ptithcm.clothing_store")
 @ComponentScan(basePackageClasses = {
@@ -33,6 +40,7 @@ import java.util.*;
         ApplicationProductMapper.class,
         SecurityConfigurer.class,
         ApplicationHandleException.class,
+        JwtUtil.class,
         CustomerService.class,
 })
 @EnableJpaRepositories(basePackages = {"com.ptithcm.clothing_store.repository"}, repositoryImplementationPostfix = "CustomImpl")
@@ -48,6 +56,7 @@ public class ApplicationWebConfiguration extends SpringBootServletInitializer {
     private ApiKey apiKey() {
         return new ApiKey("JWT", "Authorization", "header");
     }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).build();
     }
@@ -84,16 +93,24 @@ public class ApplicationWebConfiguration extends SpringBootServletInitializer {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedHeaders("GET","POST","PUT","DELETE")
+                        .allowedHeaders("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowedOrigins("*");
             }
         };
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        commonsMultipartResolver.setMaxUploadSize(1000000);
+        commonsMultipartResolver.setDefaultEncoding("UTF-8");
+        return commonsMultipartResolver;
     }
 
 }
