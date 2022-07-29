@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.repository;
 
+import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,6 @@ public interface BillRepository extends JpaRepository<Bill,Long>, QuerydslPredic
     Optional<Bill> findById(Long id);
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
     List<Bill> findByCustomerId(Long id);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
+    List<Bill> findAllByOrdersState(EnumState state);
 }

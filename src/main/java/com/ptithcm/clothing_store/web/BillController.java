@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.web;
 
+import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.dto.bill.BillUpdateDto;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import com.ptithcm.clothing_store.model.entity.BillProductDetail;
@@ -30,6 +31,15 @@ public class BillController extends AbstractApplicationController {
     public ResponseEntity<Object> getListBill(){
 
         return new ResponseEntity<>(billService.findAll()
+                .stream()
+                .map(billMapper::billToBillDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping("get-list-bill-processing/{state}")
+    public ResponseEntity<Object> getListBillProcessing(@PathVariable("state")EnumState state){
+
+        return new ResponseEntity<>(billService.findByOrdersState(state)
                 .stream()
                 .map(billMapper::billToBillDto)
                 .collect(Collectors.toList()), HttpStatus.OK);

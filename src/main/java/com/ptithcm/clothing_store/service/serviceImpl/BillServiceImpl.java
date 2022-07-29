@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.service.serviceImpl;
 
+import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.repository.BillRepository;
@@ -37,6 +38,15 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<Bill> findByCustomerId(Long id) {
         List<Bill> bills = billRepository.findByCustomerId(id);
+        if(bills.size() == 0){
+            throw new ResourceNotFoundException("Can't found bill");
+        }
+        return bills;
+    }
+
+    @Override
+    public List<Bill> findByOrdersState(EnumState state) {
+        List<Bill> bills = billRepository.findAllByOrdersState(state);
         if(bills.size() == 0){
             throw new ResourceNotFoundException("Can't found bill");
         }

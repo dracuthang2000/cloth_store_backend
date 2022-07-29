@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.service;
 
+import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import java.util.List;
 
@@ -8,4 +9,5 @@ public interface BillService {
     Bill findById(Long id);
     String save(Bill bill);
     List<Bill> findByCustomerId(Long id);
+    List<Bill> findByOrdersState(EnumState state);
 }
