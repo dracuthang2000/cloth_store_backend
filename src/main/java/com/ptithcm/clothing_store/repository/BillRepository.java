@@ -2,6 +2,7 @@ package com.ptithcm.clothing_store.repository;
 
 import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.entity.Bill;
+import com.ptithcm.clothing_store.repository.custom.BillRepositoryCustom;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BillRepository extends JpaRepository<Bill,Long>, QuerydslPredicateExecutor<Bill> {
+public interface BillRepository extends JpaRepository<Bill,Long>, QuerydslPredicateExecutor<Bill>, BillRepositoryCustom {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
     List<Bill> findAll();
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
