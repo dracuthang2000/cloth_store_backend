@@ -2,6 +2,7 @@ package com.ptithcm.clothing_store.service.serviceImpl;
 
 import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
 import com.ptithcm.clothing_store.model.Enum.EnumState;
+import com.ptithcm.clothing_store.model.dto.bill.ReportProceeds;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.repository.BillRepository;
@@ -9,8 +10,10 @@ import com.ptithcm.clothing_store.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class BillServiceImpl implements BillService {
@@ -52,5 +55,20 @@ public class BillServiceImpl implements BillService {
             throw new ResourceNotFoundException("Can't found bill");
         }
         return bills;
+    }
+
+    @Override
+    public List<ReportProceeds> getReportProceeds(LocalDate fromDate, LocalDate toDate) {
+        List<Object[]> lstObject = billRepository.getReportProceeds(fromDate,toDate);
+        List<ReportProceeds> result = new ArrayList<>();
+        if(!Objects.isNull(lstObject)&&lstObject.size()!=0){
+            lstObject.stream().forEach((data)->{
+                ReportProceeds reportProceeds = new ReportProceeds();
+                reportProceeds.setYearMonth(data[1]+"-"+data[0]);
+                reportProceeds.setTotal((Long) data[2]);
+                result.add(reportProceeds);
+            });
+        }
+        return result;
     }
 }

@@ -4,6 +4,7 @@ import com.ptithcm.clothing_store.model.dto.MaterialDto;
 import com.ptithcm.clothing_store.model.entity.Material;
 import com.ptithcm.clothing_store.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class MaterialController extends AbstractApplicationController {
     }
 
     @GetMapping("get-material-by-id")
-    public ResponseEntity<Object> findMaterialById(@PathVariable("id") Long id){
+    public ResponseEntity<Object> findMaterialById(@RequestParam("id") Long id){
         return new ResponseEntity<>(
                 mapper.materialToMaterialDto(materialService.findOne(id)),HttpStatus.OK);
     }

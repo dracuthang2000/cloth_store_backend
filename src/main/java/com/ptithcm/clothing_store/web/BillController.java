@@ -9,11 +9,15 @@ import com.ptithcm.clothing_store.model.entity.ProductColorSize;
 import com.ptithcm.clothing_store.service.BillService;
 import com.ptithcm.clothing_store.service.CustomerService;
 import com.ptithcm.clothing_store.service.ProductColorSizeService;
+import com.ptithcm.clothing_store.util.LocalDateUntils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 @RestController
@@ -76,5 +80,17 @@ public class BillController extends AbstractApplicationController {
         orders.setStartDate(req.getDate());
         entity.addOrder(orders);
         return new ResponseEntity<>(billService.save(entity),HttpStatus.OK);
+    }
+
+    @GetMapping("report/get-report-proceeds/")
+    public ResponseEntity<Object> getReportProceeds(@Param("fromDate") String fromDate
+            ,@Param("toDate") String toDate){
+
+        return new ResponseEntity<>(
+                billService.getReportProceeds(
+                        LocalDateUntils.convertStringToLocalDate(fromDate)
+                        , LocalDateUntils.convertStringToLocalDate(toDate)),
+                HttpStatus.OK
+        );
     }
 }

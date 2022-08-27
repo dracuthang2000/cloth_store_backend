@@ -26,7 +26,7 @@ public class ColorController extends AbstractApplicationController {
     }
 
     @GetMapping("get-color-by-id")
-    public ResponseEntity<Object> getColorById(@PathVariable("id")Long id){
+    public ResponseEntity<Object> getColorById(@RequestParam("id")Long id){
         return new ResponseEntity<>(
                 mapper.colorToColorDto(colorService.findOne(id)),HttpStatus.OK
         );

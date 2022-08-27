@@ -29,7 +29,7 @@ public class BrandController extends AbstractApplicationController {
     }
 
     @GetMapping("/find-by-id")
-    public ResponseEntity<Object> getBrandById(@PathVariable("id") Long id){
+    public ResponseEntity<Object> getBrandById(@RequestParam("id") Long id){
         return new ResponseEntity<>(
                 mapper.brandToBrandDto(brandService.findOne(id)),HttpStatus.OK);
     }

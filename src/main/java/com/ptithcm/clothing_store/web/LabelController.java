@@ -4,6 +4,7 @@ import com.ptithcm.clothing_store.model.dto.LabelDto;
 import com.ptithcm.clothing_store.model.entity.Label;
 import com.ptithcm.clothing_store.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class LabelController extends AbstractApplicationController {
     }
 
     @GetMapping("get-label-by-id")
-    public ResponseEntity<Object> getLabelById(@PathVariable("id") Long id){
+    public ResponseEntity<Object> getLabelById(@RequestParam("id") Long id){
         return new ResponseEntity<>(
                 mapper.labelToLabelDto(labelService.findOne(id)),
                 HttpStatus.OK);

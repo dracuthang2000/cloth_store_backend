@@ -26,7 +26,7 @@ public class SizeController extends AbstractApplicationController {
     }
 
     @GetMapping("get-size-by-id")
-    public ResponseEntity<Object> getSizeById(@PathVariable("id")Long id){
+    public ResponseEntity<Object> getSizeById(@RequestParam("id")Long id){
         return new ResponseEntity<>(
                 mapper.sizeToSizeDto(sizeService.findOne(id)),HttpStatus.OK
         );

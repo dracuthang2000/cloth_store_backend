@@ -17,7 +17,7 @@ public class BillTest {
     private BillRepository billTest;
 
     @Test
-    void getProceeds(){
+    void getReportProceeds(){
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fromDate = LocalDate.parse("2021-01-01",format);
         LocalDate toDate = LocalDate.parse("2022-12-31",format);
