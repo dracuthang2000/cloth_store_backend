@@ -25,6 +25,6 @@ public class ProductColorSize {
     @ManyToOne
     @JoinColumn(name = "id_size",referencedColumnName = "id")
     private Size size;
-    @OneToMany(mappedBy = "productColorSize")
+    @OneToMany(mappedBy = "productColorSize",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private Set<BillProductDetail> billProductDetails;
 }

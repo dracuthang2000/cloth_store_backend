@@ -54,7 +54,7 @@ public class Product extends IdAndVersion {
     private Boolean isNew;
     @Column(name = "tag")
     private String tag;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private Set<ProductColor> productColors = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "id_label",referencedColumnName = "id")

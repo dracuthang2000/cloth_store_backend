@@ -34,13 +34,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 "INNER JOIN ProductColorSize PCZ ON PCZ.id = BPD.productColorSize.id " +
                 "INNER JOIN ProductColor PC ON PC.id = PCZ.productColor.id " +
                 "INNER JOIN Product P ON PC.product.id = P.id " +
-                "group by P.id ORDER BY SUM(BPD.quantity) DESC",Long.class);
+                "GROUP BY P.id ORDER BY SUM(BPD.quantity) DESC",Long.class);
         List<Long> lstId = query.setMaxResults(5).getResultList();
         return new JPAQuery<Product>(em)
                 .select(QProduct.product)
                 .from(QProduct.product)
-                .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                 .where(QProduct.product.id.in(lstId))
+                .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                 .fetch();
     }
 }

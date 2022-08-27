@@ -6,6 +6,7 @@ import com.ptithcm.clothing_store.model.entity.ProductColor;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.service.ProductColorService;
 import com.ptithcm.clothing_store.service.ProductService;
+import com.ptithcm.clothing_store.util.TagUtil;
 import org.hibernate.engine.jdbc.ReaderInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -75,7 +76,7 @@ public class ProductController extends AbstractApplicationController {
     }
     @GetMapping("get-product-by-tag/{tag}")
     public ResponseEntity<Object> getProductByTag(@PathVariable("tag") String tag){
-        return new ResponseEntity<>(mapper.productToProductDto(productService.findByTag(tag)),HttpStatus.OK);
+        return new ResponseEntity<>(mapper.productToProductDto(productService.findByTag(TagUtil.removeDash(tag))),HttpStatus.OK);
     }
 
     @PostMapping("insert-product")

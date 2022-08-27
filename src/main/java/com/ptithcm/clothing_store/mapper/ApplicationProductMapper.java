@@ -183,7 +183,7 @@ public class ApplicationProductMapper {
         dto.setPrice(entity.getPrice());
         dto.setImg(entity.getImage());
         dto.setIsNew(entity.getIsNew());
-        dto.setTag(entity.getTag());
+        dto.setTag(TagUtil.convertTag(entity.getTag()));
         dto.setDiscounts(this.productDiscountsToProductDiscountDtos(entity.getProductDiscounts().stream().collect(Collectors.toList())));
         if(dto.getDiscounts().size()!=0) {
             dto.getDiscounts().forEach(d->{
@@ -236,7 +236,7 @@ public class ApplicationProductMapper {
         entity.setLabel(this.labelDtoToLabel(dto.getLabel()));
         entity.setGender(this.genderDtoToGender(dto.getGender()));
         entity.setVersion(dto.getVersion());
-        entity.setTag(TagUtil.convertTag(TagUtil.removeAccent(dto.getProductName())));
+        entity.setTag(TagUtil.removeAccent(dto.getProductName()));
         entity.setIsActive(dto.getIsActive());
         entity.setIsNew(dto.getIsNew());
         entity.setImage(dto.getImg());

@@ -36,7 +36,7 @@ public class ProductColor extends IdAndVersion {
     private Product product;
     @Column(name = "image")
     private String image;
-    @OneToMany(mappedBy = "productColor")
+    @OneToMany(mappedBy = "productColor",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private Set<ProductColorSize> productColorSize = new HashSet<>();
 
 }

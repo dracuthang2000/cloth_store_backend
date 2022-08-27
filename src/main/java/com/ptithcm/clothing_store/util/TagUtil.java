@@ -2,6 +2,7 @@ package com.ptithcm.clothing_store.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class TagUtil {
     private static final char[] SYMBOL = {
@@ -51,11 +52,27 @@ public class TagUtil {
         return sb.toString();
     }
 
+    public static char removeDash(char ch){
+        if(!Objects.isNull(ch)){
+            if(ch=='-'){
+                ch=' ';
+            }
+        }
+        return ch;
+    }
+
+    public static String removeDash(String str){
+        StringBuilder sb = new StringBuilder(str);
+        for (int i = 0; i < sb.length(); i++){
+            sb.setCharAt(i,removeDash(sb.charAt(i)));
+        }
+        return sb.toString();
+    }
+
 
 
     public static String convertTag(String str)
     {
-        System.out.println(str);
         str = removeAccent(str).toLowerCase().replaceAll("[^A-Za-z0-9 ]", "");
         ArrayList<String> strs = new ArrayList<String>();
         String res = "";
