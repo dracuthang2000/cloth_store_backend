@@ -1,6 +1,7 @@
 package com.ptithcm.clothing_store.repository;
 
 import com.ptithcm.clothing_store.model.entity.Product;
+import com.ptithcm.clothing_store.repository.custom.ProductRepositoryCustom;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long>, QuerydslPredicateExecutor<Product> {
+public interface ProductRepository extends JpaRepository<Product,Long>, QuerydslPredicateExecutor<Product>, ProductRepositoryCustom {
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "graph-product")
     List<Product> findAll();
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "graph-product")

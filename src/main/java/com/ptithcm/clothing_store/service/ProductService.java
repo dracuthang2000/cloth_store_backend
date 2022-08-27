@@ -10,5 +10,6 @@ public interface ProductService {
     Product findById(Long id);
     List<Product> findProductIsNew();
     Product findByTag(String tag);
+    List<Product> getTopFiveBestSellerProduct();
     String save(Product product);
 }

@@ -82,7 +82,7 @@ public class ApplicationBillMapper {
         dto.setId(entity.getId());
         dto.setImg(entity.getImage());
         dto.setVersion(entity.getVersion());
-        dto.setColor(new ApplicationProductMapper().ColorToColorDto(entity.getColor()));
+        dto.setColor(new ApplicationProductMapper().colorToColorDto(entity.getColor()));
         dto.setProduct(productBillToProductBillDto(entity.getProduct()));
         return dto;
     }

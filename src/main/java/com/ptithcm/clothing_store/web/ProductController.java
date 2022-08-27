@@ -130,4 +130,13 @@ public class ProductController extends AbstractApplicationController {
             throw new ResourceNotFoundException("Image can't found");
         }
     }
+    @GetMapping("get-top-five-best-seller-product")
+    public ResponseEntity<Object> getTopFiveBestSellerProduct(){
+        return new ResponseEntity<>(
+                productService.getTopFiveBestSellerProduct()
+                .stream()
+                .map(mapper::productToProductDto)
+                .collect(Collectors.toList()),HttpStatus.OK
+        );
+    }
 }

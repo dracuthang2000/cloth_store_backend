@@ -55,6 +55,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getTopFiveBestSellerProduct() {
+        return productRepository.getTopFiveBestSellerProduct();
+    }
+
+    @Override
     public String save(Product product) {
         try {
             save(product);
@@ -63,4 +68,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return CSConstant.SUCCESS;
     }
+
+
 }

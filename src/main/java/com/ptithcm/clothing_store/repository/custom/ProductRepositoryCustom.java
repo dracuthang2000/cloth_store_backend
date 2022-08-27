@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ProductRepositoryCustom {
     List<Product> findProductByName(String name);
+    List<Product> getTopFiveBestSellerProduct();
 }
