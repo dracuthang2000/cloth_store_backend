@@ -27,4 +27,9 @@ public class ApplicationHandleException {
         ErrorDetails error = new ErrorDetails(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ModifyHandleException.class)
+    public ResponseEntity<Object> ModifyHandleException(ModifyHandleException ex, WebRequest request){
+        ErrorDetails error = new ErrorDetails(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_MODIFIED);
+        return new ResponseEntity<>(error,HttpStatus.NOT_MODIFIED);
+    }
 }

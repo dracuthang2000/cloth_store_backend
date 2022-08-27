@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    public List<Product> findAll();
-    public Product findById(Long id);
-    public List<Product> findProductIsNew();
-    public Product findByTag(String tag);
+    List<Product> findAll();
+    Product findById(Long id);
+    List<Product> findProductIsNew();
+    Product findByTag(String tag);
+    String save(Product product);
 }

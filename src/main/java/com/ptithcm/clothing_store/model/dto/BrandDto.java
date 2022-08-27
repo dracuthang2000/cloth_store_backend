@@ -12,5 +12,6 @@ import lombok.Setter;
 public class BrandDto {
     private Long id;
     private String brand;
+    private String image;
     private Long version;
 }

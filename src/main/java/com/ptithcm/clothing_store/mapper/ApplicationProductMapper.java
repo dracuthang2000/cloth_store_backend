@@ -3,12 +3,10 @@ package com.ptithcm.clothing_store.mapper;
 import com.ptithcm.clothing_store.model.dto.*;
 import com.ptithcm.clothing_store.model.entity.*;
 import com.ptithcm.clothing_store.util.DiscountUtil;
+import com.ptithcm.clothing_store.util.TagUtil;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -45,9 +43,11 @@ public class ApplicationProductMapper {
         entity.setImage(dto.getImg());
         entity.setVersion(dto.getVersion());
         entity.setColor(this.ColorDtoToColor(dto.getColor()));
-        entity.setProductColorSize(
-                this.productColorSizeDtoListToProductColorSizeList(
-                dto.getProductColorSizesDto().stream().collect(Collectors.toSet())));
+        if(!Objects.isNull(dto.getProductColorSizesDto())) {
+            entity.setProductColorSize(
+                    this.productColorSizeDtoListToProductColorSizeList(
+                            dto.getProductColorSizesDto().stream().collect(Collectors.toSet())));
+        }
         return entity;
     }
     public BrandDto brandToBrandDto(Brand entity){
@@ -55,6 +55,7 @@ public class ApplicationProductMapper {
         dto.setId(entity.getId());
         dto.setBrand(entity.getBrandName());
         dto.setVersion(entity.getVersion());
+        dto.setImage(entity.getImage());
         return dto;
     }
     public LabelDto labelToLabelDto(Label entity){
@@ -192,5 +193,65 @@ public class ApplicationProductMapper {
             });
         }
         return dto;
+    }
+
+    public Brand brandDtoToBrand (BrandDto dto){
+        Brand entity = new Brand();
+        entity.setId(dto.getId());
+        entity.setVersion(dto.getVersion());
+        entity.setBrandName(dto.getBrand());
+        entity.setImage(dto.getImage());
+        return entity;
+    }
+
+    public Material materialDtoToMaterial(MaterialDto dto){
+        Material entity = new Material();
+        entity.setMaterialName(dto.getMaterialName());
+        entity.setId(dto.getId());
+        entity.setVersion(dto.getVersion());
+        return entity;
+    }
+
+    public Label labelDtoToLabel(LabelDto dto){
+        Label entity = new Label();
+        entity.setLabelName(dto.getLabel());
+        entity.setTag(dto.getTag());
+        entity.setId(dto.getId());
+        entity.setVersion(dto.getVersion());
+        return entity;
+    }
+
+    public Gender genderDtoToGender(GenderDto dto){
+        Gender entity = new Gender();
+        entity.setId(dto.getId());
+        entity.setGenderName(dto.getGender());
+        entity.setVersion(dto.getVersion());
+        return entity;
+    }
+
+    public Color colorDtoColor(ColorDto dto){
+        Color entity = new Color();
+        entity.setColor(dto.getColor());
+        entity.setId(dto.getId());
+        entity.setVersion(dto.getVersion());
+        return entity;
+    }
+
+    public Product mapperUpdateProduct(ProductDto dto){
+        Product entity = new Product();
+        entity.setId(dto.getId());
+        entity.setBrand(this.brandDtoToBrand(dto.getBrand()));
+        entity.setMaterial(this.materialDtoToMaterial(dto.getMaterial()));
+        entity.setLabel(this.labelDtoToLabel(dto.getLabel()));
+        entity.setGender(this.genderDtoToGender(dto.getGender()));
+        entity.setVersion(dto.getVersion());
+        entity.setTag(TagUtil.convertTag(TagUtil.removeAccent(dto.getProductName())));
+        entity.setIsActive(dto.getIsActive());
+        entity.setIsNew(dto.getIsNew());
+        entity.setImage(dto.getImg());
+        entity.setDescription(dto.getDescription());
+        entity.setProductName(dto.getProductName());
+        entity.setPrice(dto.getPrice());
+        return entity;
     }
 }

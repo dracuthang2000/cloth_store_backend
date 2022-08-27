@@ -2,6 +2,7 @@ package com.ptithcm.clothing_store.service.serviceImpl;
 
 import com.ptithcm.clothing_store.model.entity.Product;
 import com.ptithcm.clothing_store.model.entity.ProductDiscount;
+import com.ptithcm.clothing_store.model.exception.ModifyHandleException;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.repository.ProductRepository;
 import com.ptithcm.clothing_store.service.ProductService;
@@ -16,6 +17,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
+    private static final String SUCCESS = "Success";
 
     @Autowired
     private ProductRepository productRepository;
@@ -49,5 +51,15 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("Product is not found");
         });
         return product;
+    }
+
+    @Override
+    public String save(Product product) {
+        try {
+            save(product);
+        }catch (Exception e){
+            throw new ModifyHandleException("Can't save the product");
+        }
+        return SUCCESS;
     }
 }

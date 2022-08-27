@@ -2,6 +2,7 @@ package com.ptithcm.clothing_store.web;
 
 import com.ptithcm.clothing_store.model.dto.ProductDto;
 import com.ptithcm.clothing_store.model.entity.Product;
+import com.ptithcm.clothing_store.model.entity.ProductColor;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.service.ProductColorService;
 import com.ptithcm.clothing_store.service.ProductService;
@@ -23,17 +24,13 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product/")
 public class ProductController extends AbstractApplicationController {
-    private static final String URL_IMG="J:\\Thang\\propbation\\" +
-            "clothingstore-backend\\src\\main" +
-            "\\resources\\Image\\product\\";
+    private static final String URL_IMG="D:\\CODE\\cloth_store_backend\\src\\main\\resources\\Image\\product\\";
     @Autowired
     private ProductService productService;
     @Autowired
@@ -79,6 +76,34 @@ public class ProductController extends AbstractApplicationController {
     @GetMapping("get-product-by-tag/{tag}")
     public ResponseEntity<Object> getProductByTag(@PathVariable("tag") String tag){
         return new ResponseEntity<>(mapper.productToProductDto(productService.findByTag(tag)),HttpStatus.OK);
+    }
+
+    @PostMapping("insert-product")
+    public ResponseEntity<Object> insertProduct(@RequestBody ProductDto request){
+        request.setId(0l);
+        request.setVersion(0l);
+        Product entity = mapper.mapperUpdateProduct(request);
+        if(!Objects.isNull(request.getColor())&&request.getColor().size()!=0){
+            Set<ProductColor> lstProductColor = new HashSet<>();
+            request.getColor().stream().forEach((data)->{
+                lstProductColor.add(mapper.productColorDtoToProductColor(data));
+            });
+            entity.setProductColors(lstProductColor);
+        }
+        return new ResponseEntity<>(productService.save(entity),HttpStatus.OK);
+    }
+
+    @PutMapping("update-product")
+    public ResponseEntity<Object> updateProduct(@RequestBody ProductDto request){
+        Product entity = mapper.mapperUpdateProduct(request);
+        if(!Objects.isNull(request.getColor())&&request.getColor().size()!=0){
+            Set<ProductColor> lstProductColor = new HashSet<>();
+            request.getColor().stream().forEach((data)->{
+                lstProductColor.add(mapper.productColorDtoToProductColor(data));
+            });
+            entity.setProductColors(lstProductColor);
+        }
+        return new ResponseEntity<>(productService.save(entity),HttpStatus.OK);
     }
 
     @GetMapping(value = "image/load/{image}")
