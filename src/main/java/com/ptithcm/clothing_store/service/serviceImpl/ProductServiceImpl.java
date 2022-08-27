@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.service.serviceImpl;
 
+import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
 import com.ptithcm.clothing_store.model.entity.Product;
 import com.ptithcm.clothing_store.model.entity.ProductDiscount;
 import com.ptithcm.clothing_store.model.exception.ModifyHandleException;
@@ -60,6 +61,6 @@ public class ProductServiceImpl implements ProductService {
         }catch (Exception e){
             throw new ModifyHandleException("Can't save the product");
         }
-        return SUCCESS;
+        return CSConstant.SUCCESS;
     }
 }

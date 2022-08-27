@@ -14,14 +14,14 @@ public class ApplicationProductMapper {
     public ApplicationProductMapper() {
     }
 
-    public ColorDto ColorToColorDto(Color entity){
+    public ColorDto colorToColorDto(Color entity){
         ColorDto dto = new ColorDto();
         dto.setColor(entity.getColor());
         dto.setId(entity.getId());
         dto.setVersion(entity.getVersion());
         return dto;
     }
-    public Color ColorDtoToColor(ColorDto dto){
+    public Color colorDtoToColor(ColorDto dto){
         Color entity = new Color();
         entity.setColor(dto.getColor());
         entity.setId(dto.getId());
@@ -33,7 +33,7 @@ public class ApplicationProductMapper {
         dto.setId(entity.getId());
         dto.setImg(entity.getImage());
         dto.setVersion(entity.getVersion());
-        dto.setColor(this.ColorToColorDto(entity.getColor()));
+        dto.setColor(this.colorToColorDto(entity.getColor()));
         dto.setProductColorSizesDto(this.productColorSizeListToProductColorSizeDtoList(entity.getProductColorSize().stream().collect(Collectors.toList())));
         return dto;
     }
@@ -42,7 +42,7 @@ public class ApplicationProductMapper {
         entity.setId(dto.getId());
         entity.setImage(dto.getImg());
         entity.setVersion(dto.getVersion());
-        entity.setColor(this.ColorDtoToColor(dto.getColor()));
+        entity.setColor(this.colorDtoToColor(dto.getColor()));
         if(!Objects.isNull(dto.getProductColorSizesDto())) {
             entity.setProductColorSize(
                     this.productColorSizeDtoListToProductColorSizeList(
@@ -228,15 +228,6 @@ public class ApplicationProductMapper {
         entity.setVersion(dto.getVersion());
         return entity;
     }
-
-    public Color colorDtoColor(ColorDto dto){
-        Color entity = new Color();
-        entity.setColor(dto.getColor());
-        entity.setId(dto.getId());
-        entity.setVersion(dto.getVersion());
-        return entity;
-    }
-
     public Product mapperUpdateProduct(ProductDto dto){
         Product entity = new Product();
         entity.setId(dto.getId());

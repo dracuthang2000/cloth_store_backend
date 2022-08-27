@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.service.serviceImpl;
 
+import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
 import com.ptithcm.clothing_store.model.Enum.EnumState;
 import com.ptithcm.clothing_store.model.entity.Bill;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
@@ -32,7 +33,7 @@ public class BillServiceImpl implements BillService {
     @Override
     public String save(Bill bill) {
         billRepository.save(bill);
-        return SUCCESS;
+        return CSConstant.SUCCESS;
     }
 
     @Override

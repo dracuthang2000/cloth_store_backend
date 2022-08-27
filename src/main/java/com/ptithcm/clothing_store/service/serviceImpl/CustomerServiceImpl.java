@@ -1,5 +1,6 @@
 package com.ptithcm.clothing_store.service.serviceImpl;
 
+import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
 import com.ptithcm.clothing_store.model.entity.Customer;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.model.exception.UsernameNotFoundException;
@@ -40,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
                     .setPassword(bCryptPasswordEncoder.encode(customer.getAccountCustomer().getPassword()));
         }
         personRepository.save(customer);
-        return SUCCESS;
+        return CSConstant.SUCCESS;
     }
 
     @Override
