@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductColorSizeService {
-    public List<ProductColorSize> findAllById(List<Long> ids);
-    public ProductColorSize findById(Long id);
-    public String save(ProductColorSize productColorSize);
+    List<ProductColorSize> findAllById(List<Long> ids);
+    ProductColorSize findById(Long id);
+    String save(ProductColorSize productColorSize);
+    Integer getQuantityInStock(Long id);
 }

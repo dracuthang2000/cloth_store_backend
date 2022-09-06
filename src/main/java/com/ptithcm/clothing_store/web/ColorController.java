@@ -2,12 +2,14 @@ package com.ptithcm.clothing_store.web;
 
 import com.ptithcm.clothing_store.model.dto.ColorDto;
 import com.ptithcm.clothing_store.model.entity.Color;
+import com.ptithcm.clothing_store.model.exception.NotAcceptableHandleException;
 import com.ptithcm.clothing_store.service.ColorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,6 +37,9 @@ public class ColorController extends AbstractApplicationController {
 
     @PostMapping("insert-color")
     public ResponseEntity<Object> insertColor(@RequestBody ColorDto dto){
+        if(!Objects.isNull(colorService.findColorByName(dto.getColor()))){
+            throw new NotAcceptableHandleException("The color name is no accept because it is existed");
+        }
         Color entity = mapper.colorDtoToColor(dto);
         return new ResponseEntity<>(
                 colorService.save(entity),HttpStatus.OK

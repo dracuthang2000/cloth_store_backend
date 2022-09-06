@@ -10,23 +10,16 @@ import com.ptithcm.clothing_store.model.entity.Product;
 import com.ptithcm.clothing_store.model.entity.ProductColor;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.service.ProductColorService;
+import com.ptithcm.clothing_store.service.ProductColorSizeService;
 import com.ptithcm.clothing_store.service.ProductService;
 import com.ptithcm.clothing_store.util.ImageUtils;
 import com.ptithcm.clothing_store.util.TagUtil;
-import org.hibernate.engine.jdbc.ReaderInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +37,8 @@ public class ProductController extends AbstractApplicationController {
     private ProductService productService;
     @Autowired
     private ProductColorService productColorService;
+    @Autowired
+    private ProductColorSizeService productColorSizeService;
 
     @GetMapping("get-list-product")
     public ResponseEntity<Object> getAllProduct() {
@@ -199,6 +194,12 @@ public class ProductController extends AbstractApplicationController {
                         .stream()
                         .map(mapper::productToProductDto)
                         .collect(Collectors.toList()),HttpStatus.OK
+        );
+    }
+    @GetMapping("get-quantity-in-stock")
+    public  ResponseEntity<Object> findProductByNewAndName(@RequestParam("id") Long id){
+        return new ResponseEntity<>(
+                productColorSizeService.getQuantityInStock(id),HttpStatus.OK
         );
     }
 }

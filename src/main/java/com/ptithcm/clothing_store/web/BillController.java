@@ -95,7 +95,7 @@ public class BillController extends AbstractApplicationController {
                     .forEach((data)->{
                         ProductColorSize productColorSize = new ProductColorSize();
                         productColorSize = productColorSizeService.findById(data.getIdProductColorSizeDto());
-                        if(productColorSize.getQuantity()-data.getQuantity()>0) {
+                        if(productColorSize.getQuantity()-data.getQuantity()>=0) {
                             productColorSize.setQuantity(productColorSize.getQuantity() - data.getQuantity());
                         }
                         productColorSizeService.save(productColorSize);

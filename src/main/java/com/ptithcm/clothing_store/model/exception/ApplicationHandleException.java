@@ -32,4 +32,9 @@ public class ApplicationHandleException {
         ErrorDetails error = new ErrorDetails(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_MODIFIED);
         return new ResponseEntity<>(error,HttpStatus.NOT_MODIFIED);
     }
+    @ExceptionHandler(NotAcceptableHandleException.class)
+    public ResponseEntity<Object> NotAcceptableHandleException(NotAcceptableHandleException ex, WebRequest request){
+        ErrorDetails error = new ErrorDetails(ex.getMessage(), LocalDateTime.now(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(error,HttpStatus.NOT_ACCEPTABLE);
+    }
 }

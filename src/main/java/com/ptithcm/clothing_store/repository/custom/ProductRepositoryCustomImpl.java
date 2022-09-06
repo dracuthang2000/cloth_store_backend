@@ -67,13 +67,13 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                     .where(QProduct.product.tag.contains(TagUtil.removeAccent(condition.getKeyWord())))
                     .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                     .fetch();
-        }else if(condition.getIsNew()!=null && Objects.isNull(condition.getKeyWord())){
+        }else if(condition.getIsNew()!=null && "".equals(condition.getKeyWord())){
             return new JPAQuery<Product>(em)
                     .from(QProduct.product)
                     .where(QProduct.product.isNew.eq(condition.getIsNew()))
                     .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                     .fetch();
-        }else if(condition.getIsNew()!=null && !Objects.isNull(condition.getKeyWord())){
+        }else if(condition.getIsNew()!=null && !"".equals(condition.getKeyWord())){
             return new JPAQuery<Product>(em)
                     .from(QProduct.product)
                     .where(QProduct.product.tag.contains(TagUtil.removeAccent(condition.getKeyWord())).and(QProduct.product.isNew.eq(condition.getIsNew())))

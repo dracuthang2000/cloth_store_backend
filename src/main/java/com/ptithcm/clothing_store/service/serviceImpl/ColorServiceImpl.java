@@ -39,4 +39,9 @@ public class ColorServiceImpl implements ColorService {
             throw new ModifyHandleException("Update or insert color is error");
         }
     }
+
+    @Override
+    public Color findColorByName(String color) {
+        return colorRepository.findByColor(color);
+    }
 }

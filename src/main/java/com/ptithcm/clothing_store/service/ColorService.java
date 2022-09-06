@@ -8,4 +8,5 @@ public interface ColorService {
     List<Color> findAll();
     Color findOne(Long id);
     String save(Color color);
+    Color findColorByName(String color);
 }
