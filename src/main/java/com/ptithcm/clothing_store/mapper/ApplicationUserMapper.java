@@ -7,6 +7,7 @@ import com.ptithcm.clothing_store.model.dto.UserDto;
 import com.ptithcm.clothing_store.model.entity.Account;
 import com.ptithcm.clothing_store.model.entity.Customer;
 import com.ptithcm.clothing_store.model.entity.Role;
+import com.ptithcm.clothing_store.model.entity.Staff;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,22 @@ public class ApplicationUserMapper {
         UserDto dto = new UserDto();
         dto.setUsername(entity.getAccountCustomer().getUsername());
         dto.setRoleDto(this.roleToRoleDto(entity.getAccountCustomer().getRole()));
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setMail(entity.getMail());
+        dto.setAddress(entity.getAddress());
+        dto.setBirthDate(entity.getBirthDate());
+        dto.setId(entity.getId());
+        dto.setIdCard(entity.getIdCard());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setVersion(entity.getVersion());
+        dto.setGender(entity.getGender());
+        return dto;
+    }
+    public UserDto mapperUser(Staff entity) {
+        UserDto dto = new UserDto();
+        dto.setUsername(entity.getAccountStaff().getUsername());
+        dto.setRoleDto(this.roleToRoleDto(entity.getAccountStaff().getRole()));
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setMail(entity.getMail());

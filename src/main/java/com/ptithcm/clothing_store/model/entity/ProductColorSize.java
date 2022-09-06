@@ -16,6 +16,7 @@ import java.util.Set;
 @Setter
 public class ProductColorSize {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "quantity")
     private Integer quantity;

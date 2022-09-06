@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/color/")
+@CrossOrigin
 public class ColorController extends AbstractApplicationController {
     @Autowired
     private ColorService colorService;

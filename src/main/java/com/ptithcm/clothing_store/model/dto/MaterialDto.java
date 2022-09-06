@@ -14,5 +14,7 @@ public class MaterialDto {
     private Long id;
     @JsonProperty("material_name")
     private String materialName;
+    @JsonProperty("tag_material")
+    private String tag;
     private Long version;
 }

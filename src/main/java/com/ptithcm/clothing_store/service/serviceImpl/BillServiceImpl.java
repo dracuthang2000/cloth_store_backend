@@ -71,4 +71,14 @@ public class BillServiceImpl implements BillService {
         }
         return result;
     }
+
+    @Override
+    public List<Bill> findByOrdersIdShipper(Long id) {
+        return billRepository.findAllByOrdersDriverId(id);
+    }
+
+    @Override
+    public List<Bill> findByOrdersIdShipperAndState(Long id, EnumState state) {
+        return billRepository.findAllByOrdersDriverIdAndOrdersState(id,state);
+    }
 }

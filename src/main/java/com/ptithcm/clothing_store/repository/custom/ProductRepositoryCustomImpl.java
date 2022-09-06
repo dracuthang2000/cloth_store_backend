@@ -1,5 +1,7 @@
 package com.ptithcm.clothing_store.repository.custom;
 
+import com.ptithcm.clothing_store.model.dto.filter.ConditionSearchListProduct;
+import com.ptithcm.clothing_store.model.dto.filter.FilterProduct;
 import com.ptithcm.clothing_store.model.entity.*;
 import com.ptithcm.clothing_store.util.TagUtil;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -12,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     @Autowired
@@ -25,6 +28,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
         return new JPAQuery<Product>(em)
                 .from(QProduct.product)
                 .where(QProduct.product.tag.contains(TagUtil.removeAccent(name)))
+                .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                 .fetch();
     }
 
@@ -42,5 +46,40 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 .where(QProduct.product.id.in(lstId))
                 .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
                 .fetch();
+    }
+
+    @Override
+    public List<Product> findProductByContainTagMaterialAndTagLabelAndTagBrand(FilterProduct filter) {
+        return new JPAQuery<Product>(em)
+                .from(QProduct.product)
+                .where(QProduct.product.brand.tag.contains(TagUtil.removeDash(filter.getTagBrand()))
+                        .and(QProduct.product.label.tag.contains(TagUtil.removeDash(filter.getTagLabel())))
+                        .and(QProduct.product.material.tag.contains(TagUtil.removeDash(filter.getTagMaterial()))))
+                .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
+                .fetch();
+    }
+
+    @Override
+    public List<Product> findProductByNewAndName(ConditionSearchListProduct condition) {
+        if(condition.getIsNew()==null){
+            return new JPAQuery<Product>(em)
+                    .from(QProduct.product)
+                    .where(QProduct.product.tag.contains(TagUtil.removeAccent(condition.getKeyWord())))
+                    .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
+                    .fetch();
+        }else if(condition.getIsNew()!=null && Objects.isNull(condition.getKeyWord())){
+            return new JPAQuery<Product>(em)
+                    .from(QProduct.product)
+                    .where(QProduct.product.isNew.eq(condition.getIsNew()))
+                    .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
+                    .fetch();
+        }else if(condition.getIsNew()!=null && !Objects.isNull(condition.getKeyWord())){
+            return new JPAQuery<Product>(em)
+                    .from(QProduct.product)
+                    .where(QProduct.product.tag.contains(TagUtil.removeAccent(condition.getKeyWord())).and(QProduct.product.isNew.eq(condition.getIsNew())))
+                    .setHint("javax.persistence.fetchgraph",em.getEntityGraph("graph-product"))
+                    .fetch();
+        }
+        return null;
     }
 }

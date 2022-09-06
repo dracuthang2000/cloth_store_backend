@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,6 +25,9 @@ public class ApplicationBillMapper {
         dto.setVersion(entity.getVersion());
         dto.setIdCustomer(entity.getCustomer().getId());
         dto.setState(entity.getOrders().getState());
+        if(!Objects.isNull(entity.getOrders().getDriver())){
+            dto.setIdShipper(entity.getOrders().getDriver().getId());
+        }
         receiverDto.setAddress(entity.getAddress());
         receiverDto.setFirstName(entity.getFirstName());
         receiverDto.setLastName(entity.getLastName());

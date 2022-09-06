@@ -18,6 +18,7 @@ public class ColorProductDto {
     private ColorDto color;
     @JsonProperty("color_size")
     private List<ProductColorSizeDto> productColorSizesDto;
+    @JsonProperty("image_name")
     private String img;
     private Long version;
     private ProductDto product;

@@ -1,11 +1,17 @@
 package com.ptithcm.clothing_store.web;
 
+import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
+import com.ptithcm.clothing_store.model.dto.Image;
 import com.ptithcm.clothing_store.model.dto.ProductDto;
+import com.ptithcm.clothing_store.model.dto.filter.ConditionSearchListProduct;
+import com.ptithcm.clothing_store.model.dto.filter.FilterProduct;
+import com.ptithcm.clothing_store.model.entity.Price;
 import com.ptithcm.clothing_store.model.entity.Product;
 import com.ptithcm.clothing_store.model.entity.ProductColor;
 import com.ptithcm.clothing_store.model.exception.ResourceNotFoundException;
 import com.ptithcm.clothing_store.service.ProductColorService;
 import com.ptithcm.clothing_store.service.ProductService;
+import com.ptithcm.clothing_store.util.ImageUtils;
 import com.ptithcm.clothing_store.util.TagUtil;
 import org.hibernate.engine.jdbc.ReaderInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +20,24 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/product/")
+@CrossOrigin
 public class ProductController extends AbstractApplicationController {
     private static final String URL_IMG="D:\\CODE\\cloth_store_backend\\src\\main\\resources\\Image\\product\\";
     @Autowired
@@ -81,29 +89,58 @@ public class ProductController extends AbstractApplicationController {
 
     @PostMapping("insert-product")
     public ResponseEntity<Object> insertProduct(@RequestBody ProductDto request){
+        Product entity = new Product();
+        Price price = new Price();
         request.setId(0l);
         request.setVersion(0l);
-        Product entity = mapper.mapperUpdateProduct(request);
+        if(!Objects.isNull(request.getLstImage())&&request.getLstImage().size()>0){
+            request.getLstImage().stream().forEach((data)->ImageUtils.downloadImage(data,URL_IMG));
+        }
+        entity = mapper.mapperUpdateProduct(request);
         if(!Objects.isNull(request.getColor())&&request.getColor().size()!=0){
             Set<ProductColor> lstProductColor = new HashSet<>();
             request.getColor().stream().forEach((data)->{
+                data.setId(0l);
+                data.getProductColorSizesDto().stream()
+                        .forEach(data1->{
+                            data1.setId(0l);
+                        });
                 lstProductColor.add(mapper.productColorDtoToProductColor(data));
             });
-            entity.setProductColors(lstProductColor);
+            lstProductColor.stream()
+            .forEach((e)->{
+                e.addProductColorSize(e.getProductColorSize());
+            });
+            entity.addProductColor(lstProductColor);
         }
-        return new ResponseEntity<>(productService.save(entity),HttpStatus.OK);
+        price.setPrice(entity.getPrice());
+        price.setStartDate(LocalDate.now());
+        entity.addPriceLog(price);
+        productService.save(entity);
+        return new ResponseEntity<>(CSConstant.SUCCESS,HttpStatus.OK);
     }
 
     @PutMapping("update-product")
     public ResponseEntity<Object> updateProduct(@RequestBody ProductDto request){
         Product entity = mapper.mapperUpdateProduct(request);
+        Price price = new Price();
+        if(!Objects.isNull(request.getLstImage())&&request.getLstImage().size()>0){
+            request.getLstImage().stream().forEach((data)->ImageUtils.downloadImage(data,URL_IMG));
+        }
         if(!Objects.isNull(request.getColor())&&request.getColor().size()!=0){
             Set<ProductColor> lstProductColor = new HashSet<>();
             request.getColor().stream().forEach((data)->{
                 lstProductColor.add(mapper.productColorDtoToProductColor(data));
             });
-            entity.setProductColors(lstProductColor);
+            lstProductColor.stream()
+                    .forEach((e)->{
+                        e.addProductColorSize(e.getProductColorSize());
+                    });
+            entity.addProductColor(lstProductColor);
         }
+        price.setPrice(entity.getPrice());
+        price.setStartDate(LocalDate.now());
+        entity.addPriceLog(price);
         return new ResponseEntity<>(productService.save(entity),HttpStatus.OK);
     }
 
@@ -120,16 +157,11 @@ public class ProductController extends AbstractApplicationController {
             throw new ResourceNotFoundException("Image can't found");
         }
     }
-    @PostMapping(value = "image/upload",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Object> uploadImage(@RequestParam("file") MultipartFile image){
-        try{
-            byte[] bytes = image.getBytes();
-            Path path = Paths.get(URL_IMG+image.getOriginalFilename());
-            Files.write(path, bytes);
+    @PostMapping(value = "image/upload")
+    public ResponseEntity<Object> uploadImage(@RequestBody Image image){
+            ImageUtils.downloadImage(image,URL_IMG);
             return new ResponseEntity<>("SUCCESS",HttpStatus.OK);
-        }catch (IOException e){
-            throw new ResourceNotFoundException("Image can't found");
-        }
+
     }
     @GetMapping("get-top-five-best-seller-product")
     public ResponseEntity<Object> getTopFiveBestSellerProduct(){
@@ -138,6 +170,35 @@ public class ProductController extends AbstractApplicationController {
                 .stream()
                 .map(mapper::productToProductDto)
                 .collect(Collectors.toList()),HttpStatus.OK
+        );
+    }
+
+    @GetMapping("find-product-by-name")
+    public ResponseEntity<Object> findProductByTagName(@RequestParam("keyword")String keyword){
+        return new ResponseEntity<>(
+                productService.findContainByName(keyword)
+                        .stream()
+                        .map(mapper::productToProductDto)
+                        .collect(Collectors.toList()),HttpStatus.OK
+        );
+    }
+    @PostMapping("findProductByCondition")
+    public ResponseEntity<Object> findProductByContainTagMaterialAndTagLabelAndTagBrand(@RequestBody FilterProduct filter){
+        return new ResponseEntity<>(
+                productService.findProductByContainTagMaterialAndTagLabelAndTagBrand(filter)
+                        .stream()
+                        .map(mapper::productToProductDto)
+                        .collect(Collectors.toList()),HttpStatus.OK
+        );
+    }
+
+    @PostMapping("find-product-by-new-and-name")
+    public  ResponseEntity<Object> findProductByNewAndName(@RequestBody ConditionSearchListProduct condition){
+        return new ResponseEntity<>(
+                productService.findProductByNewAndName(condition)
+                        .stream()
+                        .map(mapper::productToProductDto)
+                        .collect(Collectors.toList()),HttpStatus.OK
         );
     }
 }

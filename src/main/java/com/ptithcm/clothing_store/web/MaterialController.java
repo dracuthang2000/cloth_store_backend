@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/material/")
+@CrossOrigin
 public class MaterialController extends AbstractApplicationController {
 
     @Autowired

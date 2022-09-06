@@ -55,6 +55,7 @@ public class ApplicationProductMapper {
         dto.setId(entity.getId());
         dto.setBrand(entity.getBrandName());
         dto.setVersion(entity.getVersion());
+        dto.setTag(TagUtil.convertTag(entity.getTag()));
         dto.setImage(entity.getImage());
         return dto;
     }
@@ -64,6 +65,7 @@ public class ApplicationProductMapper {
         dto.setTag(entity.getTag());
         dto.setId(entity.getId());
         dto.setVersion(entity.getVersion());
+        dto.setTag(TagUtil.convertTag(entity.getTag()));
         return dto;
     }
     public GenderDto genderToGenderDto(Gender entity){
@@ -99,6 +101,7 @@ public class ApplicationProductMapper {
         dto.setId(entity.getId());
         dto.setMaterialName(entity.getMaterialName());
         dto.setVersion(entity.getVersion());
+        dto.setTag(TagUtil.convertTag(entity.getTag()));
         return dto;
     }
     private PriceDto priceToPriceDto(Price entity){
@@ -164,7 +167,9 @@ public class ApplicationProductMapper {
         entity.setId(dto.getId());
         entity.setQuantity(dto.getQuantity());
         entity.setSize(this.sizeDtoToSize(dto.getSize()));
-        entity.setProductColor(this.productColorDtoToProductColor(dto.getColor()));
+        if(!Objects.isNull(dto.getColor())) {
+            entity.setProductColor(this.productColorDtoToProductColor(dto.getColor()));
+        }
         return entity;
     }
     public ProductDto productToProductDto(Product entity){
@@ -201,6 +206,7 @@ public class ApplicationProductMapper {
         entity.setVersion(dto.getVersion());
         entity.setBrandName(dto.getBrand());
         entity.setImage(dto.getImage());
+        entity.setTag(TagUtil.removeAccent(dto.getBrand()));
         return entity;
     }
 
@@ -209,6 +215,7 @@ public class ApplicationProductMapper {
         entity.setMaterialName(dto.getMaterialName());
         entity.setId(dto.getId());
         entity.setVersion(dto.getVersion());
+        entity.setTag(TagUtil.removeAccent(dto.getMaterialName()));
         return entity;
     }
 
@@ -218,6 +225,7 @@ public class ApplicationProductMapper {
         entity.setTag(dto.getTag());
         entity.setId(dto.getId());
         entity.setVersion(dto.getVersion());
+        entity.setTag(TagUtil.removeAccent(dto.getLabel()));
         return entity;
     }
 

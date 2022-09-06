@@ -35,4 +35,5 @@ public class ProductDto {
     private Long version;
     @JsonProperty("is_new")
     private Boolean isNew;
+    List<Image> lstImage;
 }

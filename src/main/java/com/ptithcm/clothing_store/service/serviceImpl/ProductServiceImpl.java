@@ -1,6 +1,8 @@
 package com.ptithcm.clothing_store.service.serviceImpl;
 
 import com.ptithcm.clothing_store.model.CSConstants.CSConstant;
+import com.ptithcm.clothing_store.model.dto.filter.ConditionSearchListProduct;
+import com.ptithcm.clothing_store.model.dto.filter.FilterProduct;
 import com.ptithcm.clothing_store.model.entity.Product;
 import com.ptithcm.clothing_store.model.entity.ProductDiscount;
 import com.ptithcm.clothing_store.model.exception.ModifyHandleException;
@@ -62,11 +64,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String save(Product product) {
         try {
-            save(product);
+           productRepository.save(product);
         }catch (Exception e){
             throw new ModifyHandleException("Can't save the product");
         }
         return CSConstant.SUCCESS;
+    }
+
+    @Override
+    public List<Product> findContainByName(String keyword) {
+        return productRepository.findProductByName(keyword);
+    }
+
+    @Override
+    public List<Product> findProductByContainTagMaterialAndTagLabelAndTagBrand(FilterProduct filter) {
+        return productRepository.findProductByContainTagMaterialAndTagLabelAndTagBrand(filter);
+    }
+
+    @Override
+    public List<Product> findProductByNewAndName(ConditionSearchListProduct condition) {
+        return productRepository.findProductByNewAndName(condition);
     }
 
 

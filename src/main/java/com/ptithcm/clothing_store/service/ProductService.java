@@ -1,5 +1,7 @@
 package com.ptithcm.clothing_store.service;
 
+import com.ptithcm.clothing_store.model.dto.filter.ConditionSearchListProduct;
+import com.ptithcm.clothing_store.model.dto.filter.FilterProduct;
 import com.ptithcm.clothing_store.model.entity.Product;
 
 import java.util.List;
@@ -12,4 +14,7 @@ public interface ProductService {
     Product findByTag(String tag);
     List<Product> getTopFiveBestSellerProduct();
     String save(Product product);
+    List<Product> findContainByName(String keyword);
+    List<Product> findProductByContainTagMaterialAndTagLabelAndTagBrand(FilterProduct filter);
+    List<Product> findProductByNewAndName(ConditionSearchListProduct condition);
 }

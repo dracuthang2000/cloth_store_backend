@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter@Setter
-public class updateProductDto {
+public class UpdateProductDto {
     private Long id;
     @JsonProperty("product_name")
     private String productName;
@@ -35,4 +35,6 @@ public class updateProductDto {
     private Long version;
     @JsonProperty("is_new")
     private Boolean isNew;
+    @JsonProperty("list_image")
+    List<Image> lstImage;
 }

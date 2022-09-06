@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -68,8 +69,19 @@ public class Product extends IdAndVersion {
     @ManyToOne
     @JoinColumn(name = "id_gender",referencedColumnName = "id")
     private Gender gender;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private Set<Price> prices = new HashSet<>();
     @OneToMany(mappedBy = "product")
     private Set<ProductDiscount> productDiscounts = new HashSet<>();
+    public void addProductColor(Set<ProductColor> colors){
+        if(!Objects.isNull(colors)){
+            this.setProductColors(colors);
+            colors.stream().forEach(e->
+                    e.setProduct(this));
+        }
+    }
+    public void addPriceLog(Price price){
+        price.setProduct(this);
+        this.getPrices().add(price);
+    }
 }

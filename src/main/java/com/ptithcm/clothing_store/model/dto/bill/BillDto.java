@@ -28,4 +28,6 @@ public class BillDto {
     @JsonProperty("bill_product_details")
     private List<BillProductDetailDto> billProductDetails;
     private Long version;
+    @JsonProperty("id_shipper")
+    private Long idShipper;
 }

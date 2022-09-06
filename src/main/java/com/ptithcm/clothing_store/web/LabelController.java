@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/label/")
+@CrossOrigin
 public class LabelController extends AbstractApplicationController {
     @Autowired
     LabelService labelService;

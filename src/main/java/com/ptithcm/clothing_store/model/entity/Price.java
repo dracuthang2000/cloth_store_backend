@@ -19,7 +19,7 @@ public class Price extends IdAndVersion {
     private Long price;
     @Column(name = "start_date")
     private LocalDate startDate;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "id_product",referencedColumnName = "id")
     private Product product;
 }

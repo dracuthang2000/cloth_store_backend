@@ -21,4 +21,8 @@ public interface BillRepository extends JpaRepository<Bill,Long>, QuerydslPredic
     List<Bill> findByCustomerId(Long id);
     @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value = "bill-graph")
     List<Bill> findAllByOrdersState(EnumState state);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value="bill-graph")
+    List<Bill> findAllByOrdersDriverId(Long id);
+    @EntityGraph(type = EntityGraph.EntityGraphType.FETCH,value="bill-graph")
+    List<Bill> findAllByOrdersDriverIdAndOrdersState(Long id,EnumState state);
 }

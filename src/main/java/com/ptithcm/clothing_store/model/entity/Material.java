@@ -22,6 +22,8 @@ import java.util.Set;
 public class Material extends IdAndVersion {
     @Column(name = "material_name")
     private String materialName;
+    @Column(name = "tag")
+    private String tag;
     @OneToMany(mappedBy = "material")
     Set<Product> products = new HashSet<>();
 }
